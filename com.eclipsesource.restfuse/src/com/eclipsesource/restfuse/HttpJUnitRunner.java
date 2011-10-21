@@ -21,7 +21,12 @@ public class HttpJUnitRunner extends BlockJUnit4ClassRunner {
   protected List<FrameworkMethod> computeTestMethods() {
     ArrayList<FrameworkMethod> result = new ArrayList<FrameworkMethod>();
     result.addAll( getTestClass().getAnnotatedMethods(HttpTest.class) );
-    result.addAll( getTestClass().getAnnotatedMethods(Test.class) );
+    List<FrameworkMethod> testAnnotatedMethods = getTestClass().getAnnotatedMethods(Test.class);
+    for( FrameworkMethod method : testAnnotatedMethods ) {
+      if( !result.contains( method ) ) {
+        result.add( method );
+      }
+    }
     return result;
   }
   

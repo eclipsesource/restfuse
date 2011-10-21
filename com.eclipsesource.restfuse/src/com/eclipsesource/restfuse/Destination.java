@@ -1,5 +1,8 @@
 package com.eclipsesource.restfuse;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
@@ -14,10 +17,19 @@ public class Destination implements MethodRule {
   private final String baseUrl;
 
   public Destination( String baseUrl ) {
+    checkBaseUrl( baseUrl );
+    this.baseUrl = baseUrl;
+  }
+
+  private void checkBaseUrl( String baseUrl ) {
     if( baseUrl == null ) {
       throw new IllegalArgumentException( "baseUrl must not be null" );
     }
-    this.baseUrl = baseUrl;
+    try {
+      new URL( baseUrl );
+    } catch( MalformedURLException mue ) {
+      throw new IllegalArgumentException( "baseUrl has to be an URL" );
+    }
   }
 
   @Override
