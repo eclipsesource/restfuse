@@ -26,4 +26,15 @@ public enum MediaType {
   public String getMimeType() {
     return mimeType;
   }
+  
+  public static MediaType fromString( String type ) {
+    MediaType result = null;
+    MediaType[] values = values();
+    for( MediaType value : values ) {
+      if( value.getMimeType().equals( type ) ) {
+        result = value;
+      }
+    }
+    return result;
+  }
 }

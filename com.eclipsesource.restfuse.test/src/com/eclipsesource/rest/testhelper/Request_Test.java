@@ -12,7 +12,7 @@ public class Request_Test {
 
   @Before
   public void setUp() {
-    request = new Request();
+//    request = new Request();
   }
   
   @Test( expected = IllegalStateException.class )

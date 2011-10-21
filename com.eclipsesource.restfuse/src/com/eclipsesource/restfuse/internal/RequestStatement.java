@@ -1,5 +1,7 @@
 package com.eclipsesource.restfuse.internal;
 
+import static org.junit.Assert.fail;
+
 import java.lang.reflect.Field;
 
 import org.junit.runners.model.FrameworkMethod;
@@ -7,6 +9,7 @@ import org.junit.runners.model.Statement;
 
 import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.Response;
+import com.eclipsesource.restfuse.annotations.Callback;
 import com.eclipsesource.restfuse.annotations.HttpContext;
 import com.eclipsesource.restfuse.annotations.HttpTest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -14,11 +17,13 @@ import com.sun.jersey.api.client.ClientResponse;
 
 public class RequestStatement extends Statement {
 
+  private static final int WAIT_TIME = 100;
   private final Statement base;
   private final FrameworkMethod method;
   private final Object target;
   private final String baseUrl;
   private Response response;
+  private CallbackServer callbackServer;
 
   public RequestStatement( Statement base, FrameworkMethod method, Object target, String baseUrl ) {
     this.base = base;
@@ -34,10 +39,50 @@ public class RequestStatement extends Statement {
   @Override
   public void evaluate() throws Throwable {
     try {
+      startCallbackServerWhenAvailable();
       sendRequest();
       tryInjectResponse();
-    } finally {
       base.evaluate();
+    } finally {
+      waitForCallbackWhenAvailable();
+    }
+  }
+
+  private void startCallbackServerWhenAvailable() {
+    Callback callbackAnnotation = method.getAnnotation( Callback.class );
+    if( callbackAnnotation != null ) {
+      callbackServer = new CallbackServer( callbackAnnotation, target );
+      callbackServer.start();
+    }
+  }
+
+  private void waitForCallbackWhenAvailable() {
+    if( callbackServer != null ) {
+      try {
+        int waitTime = 0;
+        while( !callbackServer.wasCalled() && waitTime <= callbackServer.getTimeout() ) {
+          sleep();
+          waitTime += WAIT_TIME;
+        }
+      checkCallbackWasCalled();
+      } finally {
+        callbackServer.stop();
+      }
+    }
+  }
+
+  private void sleep() {
+    try {
+      Thread.sleep( WAIT_TIME );
+    } catch( InterruptedException shouldNotHappen ) {
+      throw new IllegalStateException( "Could not wait until callback was called", 
+                                       shouldNotHappen );
+    }
+  }
+
+  private void checkCallbackWasCalled() {
+    if( !callbackServer.wasCalled() ) {
+      fail( "Callback was not called" );
     }
   }
 

@@ -19,6 +19,6 @@ public class RequestStatement_Test {
   public void setUp() {
     base = mock( Statement.class );
     method = mock( FrameworkMethod.class );
-    statement = new RequestStatement( base, method, this );
+//    statement = new RequestStatement( base, method, this );
   }
 }
