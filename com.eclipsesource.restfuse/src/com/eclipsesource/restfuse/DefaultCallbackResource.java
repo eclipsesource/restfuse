@@ -7,32 +7,32 @@ public class DefaultCallbackResource extends CallbackResource {
     = CallbackResource.createResponse( Status.NO_CONTENT, MediaType.WILDCARD, null, null );
 
   @Override
-  public Response get( ServerRequest request ) {
+  public Response get( Request request ) {
     return defaultResponse;
   }
 
   @Override
-  public Response post( ServerRequest request ) {
+  public Response post( Request request ) {
     return defaultResponse;
   }
 
   @Override
-  public Response put( ServerRequest request ) {
+  public Response put( Request request ) {
     return defaultResponse;
   }
 
   @Override
-  public Response delete( ServerRequest request ) {
+  public Response delete( Request request ) {
     return defaultResponse;
   }
 
   @Override
-  public Response head( ServerRequest request ) {
+  public Response head( Request request ) {
     return defaultResponse;
   }
 
   @Override
-  public Response options( ServerRequest request ) {
+  public Response options( Request request ) {
     return defaultResponse;
   }
 }

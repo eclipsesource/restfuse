@@ -65,15 +65,15 @@ public abstract class CallbackResource {
     return new CallbackResponse( status, contentType, body, headers );
   }
 
-  public abstract Response get( ServerRequest request );
+  public abstract Response get( Request request );
 
-  public abstract Response post( ServerRequest request );
+  public abstract Response post( Request request );
 
-  public abstract Response put( ServerRequest request );
+  public abstract Response put( Request request );
 
-  public abstract Response delete( ServerRequest request );
+  public abstract Response delete( Request request );
 
-  public abstract Response head( ServerRequest request );
+  public abstract Response head( Request request );
 
-  public abstract Response options( ServerRequest request );
+  public abstract Response options( Request request );
 }

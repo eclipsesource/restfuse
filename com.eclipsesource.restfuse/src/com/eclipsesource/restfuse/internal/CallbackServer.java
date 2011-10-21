@@ -41,6 +41,7 @@ public class CallbackServer {
     try {
       Constructor<? extends CallbackResource> constructor 
         = type.getDeclaredConstructor( new Class[] { target.getClass() } );
+      constructor.setAccessible( true );
       resource = constructor.newInstance( new Object[] { target } );
     } catch( Exception shouldNotHappen ) {
       throw new IllegalStateException( "Could not create resource instance of type " 

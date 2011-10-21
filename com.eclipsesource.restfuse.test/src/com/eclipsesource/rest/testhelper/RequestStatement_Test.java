@@ -6,12 +6,12 @@ import org.junit.Before;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import com.eclipsesource.restfuse.internal.RequestStatement;
+import com.eclipsesource.restfuse.internal.HttpTestStatement;
 
 
 public class RequestStatement_Test {
   
-  RequestStatement statement;
+  HttpTestStatement statement;
   private Statement base;
   private FrameworkMethod method;
   

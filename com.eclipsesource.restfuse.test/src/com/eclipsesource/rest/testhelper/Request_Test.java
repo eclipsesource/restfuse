@@ -3,12 +3,12 @@ package com.eclipsesource.rest.testhelper;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eclipsesource.restfuse.Request;
+import com.eclipsesource.restfuse.Destination;
 
 
 public class Request_Test {
   
-  private Request request;
+  private Destination request;
 
   @Before
   public void setUp() {

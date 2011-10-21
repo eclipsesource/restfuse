@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.eclipsesource.restfuse.CallbackResource;
 import com.eclipsesource.restfuse.MediaType;
 import com.eclipsesource.restfuse.Response;
-import com.eclipsesource.restfuse.ServerRequest;
+import com.eclipsesource.restfuse.Request;
 
 
 public class CallbackSerlvet extends HttpServlet {
@@ -75,15 +75,15 @@ public class CallbackSerlvet extends HttpServlet {
     wasCalled = true;
   }
 
-  private ServerRequest createRequest( HttpServletRequest req ) {
+  private Request createRequest( HttpServletRequest req ) {
     MediaType mediaType = MediaType.fromString( req.getContentType() );
     String body = getBody( req );
-    ServerRequestImpl result = new ServerRequestImpl( body, mediaType );
+    RequestImpl result = new RequestImpl( body, mediaType );
     addHeaderToRequest( req, result );
     return result;
   }
 
-  private void addHeaderToRequest( HttpServletRequest req, ServerRequestImpl request ) {
+  private void addHeaderToRequest( HttpServletRequest req, RequestImpl request ) {
     @SuppressWarnings( "rawtypes" )
     Enumeration headerNames = req.getHeaderNames();
     while( headerNames.hasMoreElements() ) {

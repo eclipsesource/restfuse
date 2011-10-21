@@ -19,7 +19,7 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.client.filter.HTTPDigestAuthFilter;
 
 
-public class HttpRequest {
+public class InternalRequest {
   
   private final Map<String, List<String>> headers;
   private final List<AuthenticationInfo> authentications;
@@ -27,7 +27,7 @@ public class HttpRequest {
   private InputStream content;
   private String mediaType;
 
-  public HttpRequest( String url ) {
+  public InternalRequest( String url ) {
     this.url = url;
     headers = new HashMap<String, List<String>>();
     authentications = new ArrayList<AuthenticationInfo>();

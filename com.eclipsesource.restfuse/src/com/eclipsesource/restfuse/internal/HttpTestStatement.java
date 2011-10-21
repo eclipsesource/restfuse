@@ -10,14 +10,15 @@ import org.junit.runners.model.Statement;
 import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.Response;
 import com.eclipsesource.restfuse.annotations.Callback;
-import com.eclipsesource.restfuse.annotations.HttpContext;
+import com.eclipsesource.restfuse.annotations.Context;
 import com.eclipsesource.restfuse.annotations.HttpTest;
 import com.sun.jersey.api.client.ClientResponse;
 
 
-public class RequestStatement extends Statement {
+public class HttpTestStatement extends Statement {
 
   private static final int WAIT_TIME = 100;
+  
   private final Statement base;
   private final FrameworkMethod method;
   private final Object target;
@@ -25,7 +26,11 @@ public class RequestStatement extends Statement {
   private Response response;
   private CallbackServer callbackServer;
 
-  public RequestStatement( Statement base, FrameworkMethod method, Object target, String baseUrl ) {
+  public HttpTestStatement( Statement base, 
+                            FrameworkMethod method, 
+                            Object target, 
+                            String baseUrl ) 
+  {
     this.base = base;
     this.method = method;
     this.target = target;
@@ -87,17 +92,17 @@ public class RequestStatement extends Statement {
   }
 
   private void sendRequest() {
-    HttpRequest request = buildRequest();
+    InternalRequest request = buildRequest();
     ClientResponse clientResponse = callService( request );
     response = new ResponseImpl( clientResponse );
   }
 
-  private HttpRequest buildRequest() {
+  private InternalRequest buildRequest() {
     RequestConfiguration requestConfiguration = new RequestConfiguration( baseUrl, method, target );
     return requestConfiguration.createRequest();
   }
 
-  private ClientResponse callService( HttpRequest request ) {
+  private ClientResponse callService( InternalRequest request ) {
     Method requestMethod = method.getAnnotation( HttpTest.class ).method();
     ClientResponse result = null;
     if( requestMethod.equals( Method.GET ) ) {
@@ -119,7 +124,7 @@ public class RequestStatement extends Statement {
   private void tryInjectResponse() {
     Field[] fields = target.getClass().getDeclaredFields();
     for( Field field : fields ) {
-      HttpContext responseAnnotation = field.getAnnotation( HttpContext.class );
+      Context responseAnnotation = field.getAnnotation( Context.class );
       if( responseAnnotation != null && field.getType() == Response.class ) {
         injectResponse( field );
       }

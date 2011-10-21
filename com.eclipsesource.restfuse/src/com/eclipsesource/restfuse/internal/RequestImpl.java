@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 import com.eclipsesource.restfuse.MediaType;
-import com.eclipsesource.restfuse.ServerRequest;
+import com.eclipsesource.restfuse.Request;
 
 
-public class ServerRequestImpl implements ServerRequest {
+public class RequestImpl implements Request {
   
   
   private Map<String, List<String>> headers;
   private final MediaType contentType;
   private final String body;
 
-  public ServerRequestImpl( String body, MediaType contentType ) {
+  public RequestImpl( String body, MediaType contentType ) {
     this.body = body;
     this.contentType = contentType;
     headers = new HashMap<String, List<String>>();

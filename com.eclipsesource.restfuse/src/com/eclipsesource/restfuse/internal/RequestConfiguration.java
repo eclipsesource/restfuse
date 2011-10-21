@@ -28,9 +28,9 @@ public class RequestConfiguration {
     this.target = target;
   }
 
-  public HttpRequest createRequest() {
+  public InternalRequest createRequest() {
     HttpTest call = method.getAnnotation( HttpTest.class );
-    HttpRequest request = new HttpRequest( combineUrlAndPath( baseUrl, call.path() ) );
+    InternalRequest request = new InternalRequest( combineUrlAndPath( baseUrl, call.path() ) );
     addAuthentication( call, request );
     addContentType( call, request );
     addHeader( call, request );
@@ -38,7 +38,7 @@ public class RequestConfiguration {
     return request;
   }
   
-  private void addAuthentication( HttpTest call, HttpRequest request ) {
+  private void addAuthentication( HttpTest call, InternalRequest request ) {
     Authentication[] authentications = call.authentications();
     if( authentications != null ) {
       for( Authentication authentication : authentications ) {
@@ -50,14 +50,14 @@ public class RequestConfiguration {
     }
   }
 
-  private void addContentType( HttpTest call, HttpRequest request ) {
+  private void addContentType( HttpTest call, InternalRequest request ) {
     MediaType contentType = call.type();
     if( contentType != null ) {
       request.setContentType( contentType.getMimeType() );
     }
   }
 
-  private void addHeader( HttpTest call, HttpRequest request ) {
+  private void addHeader( HttpTest call, InternalRequest request ) {
     Header[] header = call.headers();
     if( header != null ) {
       for( Header parameter : header ) {
@@ -66,7 +66,7 @@ public class RequestConfiguration {
     }
   }
 
-  private void addBody( HttpTest call, HttpRequest request ) {
+  private void addBody( HttpTest call, InternalRequest request ) {
     if( !call.file().equals( "" ) ) {
       request.setContent( getFileStream( call.file() ) );
     } else if( call.content().equals( "" ) ) {
