@@ -1,14 +1,13 @@
 package com.eclipsesource.restfuse;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 
 public abstract class CallbackResource {
 
   private static class CallbackResponse implements Response {
-    
     
     private final Status status;
     private final MediaType contentType;
@@ -47,7 +46,11 @@ public abstract class CallbackResource {
 
     @Override
     public Map<String, List<String>> getHeaders() {
-      return headers;
+      Map<String, List<String>> result = null;
+      if( headers != null ) {
+        result = new HashMap<String, List<String>>( headers );
+      }
+      return result;
     }
 
     @Override
@@ -58,9 +61,9 @@ public abstract class CallbackResource {
   }
   
   public static Response createResponse( Status status, 
-                                                 MediaType contentType, 
-                                                 String body, 
-                                                 Map<String, List<String>> headers ) 
+                                         MediaType contentType, 
+                                         String body, 
+                                         Map<String, List<String>> headers ) 
   {
     return new CallbackResponse( status, contentType, body, headers );
   }
@@ -76,4 +79,5 @@ public abstract class CallbackResource {
   public abstract Response head( Request request );
 
   public abstract Response options( Request request );
+  
 }

@@ -3,7 +3,7 @@ package com.eclipsesource.restfuse;
 import static org.junit.Assert.assertEquals;
 
 
-public class Assert {
+public final class Assert {
   
   public static void assertOk( Response response ) {
     doCheckStatus( Status.OK, response );
@@ -83,5 +83,9 @@ public class Assert {
   
   private static void doCheckStatus( Status expected, Response response ) {
     assertEquals( expected.getStatusCode(), response.getStatus() );
+  }
+  
+  private Assert() {
+    // prevent instantiation
   }
 }
