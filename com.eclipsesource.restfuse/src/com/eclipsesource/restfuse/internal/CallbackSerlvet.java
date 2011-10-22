@@ -20,7 +20,7 @@ import com.eclipsesource.restfuse.Request;
 
 public class CallbackSerlvet extends HttpServlet {
   
-  boolean wasCalled;
+  private boolean wasCalled;
   private final CallbackResource resource;
 
   public CallbackSerlvet( CallbackResource resource ) {
@@ -86,10 +86,12 @@ public class CallbackSerlvet extends HttpServlet {
   private void addHeaderToRequest( HttpServletRequest req, RequestImpl request ) {
     @SuppressWarnings( "rawtypes" )
     Enumeration headerNames = req.getHeaderNames();
-    while( headerNames.hasMoreElements() ) {
-      String name = ( String )headerNames.nextElement();
-      String value = req.getHeader( name );
-      request.addHeader( name, value );
+    if( headerNames != null ) {
+      while( headerNames.hasMoreElements() ) {
+        String name = ( String )headerNames.nextElement();
+        String value = req.getHeader( name );
+        request.addHeader( name, value );
+      }
     }
   }
 

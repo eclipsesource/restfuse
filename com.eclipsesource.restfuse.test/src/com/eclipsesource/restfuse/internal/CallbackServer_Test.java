@@ -1,0 +1,65 @@
+package com.eclipsesource.restfuse.internal;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestWatchman;
+import org.junit.runners.model.FrameworkMethod;
+
+import com.eclipsesource.restfuse.DefaultCallbackResource;
+import com.eclipsesource.restfuse.Status;
+import com.eclipsesource.restfuse.annotations.Callback;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+
+
+public class CallbackServer_Test {
+  
+  private CallbackServer server;
+
+  @Rule
+  public TestWatchman watchman = new TestWatchman() {
+
+    public void starting( FrameworkMethod fakeTestMethod ) {
+      Callback callbackAnnotation = fakeTestMethod.getAnnotation( Callback.class );
+      server = new CallbackServer( callbackAnnotation, CallbackServer_Test.this );
+      server.start();
+      
+      ClientResponse response = sendRequest();
+      assertEquals( Status.NO_CONTENT.getStatusCode(), response.getStatus() );
+      assertEquals( 10000, server.getTimeout() );
+    }
+    
+    @Override
+    public void finished( FrameworkMethod method ) {
+      try {
+        sendRequest();
+        fail();
+      } catch( ClientHandlerException expected ) {}
+    }
+
+    private ClientResponse sendRequest() {
+      WebResource resource = Client.create().resource( "http://localhost:10042/test" );
+      ClientResponse response = resource.get( ClientResponse.class );
+      return response;
+    }
+    
+  };
+  
+  private class TestResource extends DefaultCallbackResource {
+    // no content
+  }
+  
+  @Test
+  @Callback( port = 10042, path = "/test", timeout = 10000, resource = TestResource.class )
+  public void fakeTestMethod() {
+    assertTrue( server.wasCalled() );
+    server.stop();
+  }
+  
+}
