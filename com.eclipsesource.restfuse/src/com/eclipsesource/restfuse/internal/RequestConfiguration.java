@@ -66,11 +66,11 @@ public class RequestConfiguration {
     }
   }
 
-  private void addBody( HttpTest call, InternalRequest request ) {
-    if( !call.file().equals( "" ) ) {
-      request.setContent( getFileStream( call.file() ) );
-    } else if( call.content().equals( "" ) ) {
-      request.setContent( getContentStream( call.content() ) );
+  private void addBody( HttpTest test, InternalRequest request ) {
+    if( !test.file().equals( "" ) ) {
+      request.setContent( getFileStream( test.file() ) );
+    } else if( !test.content().equals( "" ) ) {
+      request.setContent( getContentStream( test.content() ) );
     } 
   }
 

@@ -79,7 +79,7 @@ public class InternalRequest {
   public ClientResponse delete() {
     ClientResponse result;
     try {
-      result = createRequest().delete( ClientResponse.class, content );
+      result = createRequest().delete( ClientResponse.class );
     } catch( Exception e ) {
       throw new IllegalStateException( e );
     }

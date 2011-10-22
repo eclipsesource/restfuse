@@ -33,7 +33,7 @@ public class ResponseImpl implements Response {
   @Override
   public MediaType getType() {
     String type = clientResponse.getType().toString();
-    return MediaType.valueOf( type );
+    return MediaType.fromString( type );
   }
   
   @Override
