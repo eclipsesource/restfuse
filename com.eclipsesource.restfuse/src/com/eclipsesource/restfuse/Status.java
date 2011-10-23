@@ -1,23 +1,23 @@
+/*******************************************************************************
+ * Copyright (c) 2011 EclipseSource and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Holger Staudacher - initial API and implementation
+ ******************************************************************************/
 package com.eclipsesource.restfuse;
-/*
- * The contents of this file are subject to the terms
- * of the Common Development and Distribution License
- * (the "License").  You may not use this file except
- * in compliance with the License.
- *
- * You can obtain a copy of the license at
- * http://www.opensource.org/licenses/cddl1.php
- * See the License for the specific language governing
- * permissions and limitations under the License.
- *
- * Original File: javax.ws.rs.core.Response.java
- * 
- * NOTE: This file contains a modified copy of the Response.Status Type.
- *
- * Created on April 18, 2007, 9:00 AM
- *
- */
 
+
+/**
+ * <p>The <code>Status</code> enumeration contains values that can be used within a request/response 
+ * to represent it's status code.</p>
+ * 
+ * @see Request
+ * @see Response
+ */ 
 public enum Status {
 
   OK( 200, "OK" ),
@@ -50,19 +50,6 @@ public enum Status {
 
   public int getStatusCode() {
     return code;
-  }
-
-  public String getReason() {
-    return toString();
-  }
-
-  public static Status fromStatusCode( int statusCode ) {
-    for( Status s : Status.values() ) {
-      if( s.code == statusCode ) {
-        return s;
-      }
-    }
-    return null;
   }
 
   @Override
