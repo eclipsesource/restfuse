@@ -5,16 +5,14 @@ Bundle-SymbolicName: com.eclipsesource.restfuse
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: EclipseSource
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.junit;bundle-version="[4.8.0,4.10.0)"
+Require-Bundle: org.junit;bundle-version="[4.8.0,5.0.0)"
 Export-Package: com.eclipsesource.restfuse;version="1.0.0",
  com.eclipsesource.restfuse.annotations;version="1.0.0"
 Import-Package: com.sun.jersey.api.client,
  com.sun.jersey.api.client.filter,
  javax.servlet;version="[2.5.0,3.0.0)",
  javax.servlet.http;version="[2.5.0,3.0.0)",
- javax.ws.rs,
  javax.ws.rs.core,
  org.mortbay.component;version="[6.0.0,7.0.0)",
  org.mortbay.jetty;version="[6.0.0,7.0.0)",
- org.mortbay.jetty.servlet;version="[6.0.0,7.0.0)",
- org.mortbay.util;version="[6.0.0,7.0.0)"
+ org.mortbay.jetty.servlet;version="[6.0.0,7.0.0)"
