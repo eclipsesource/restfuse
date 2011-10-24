@@ -13,6 +13,7 @@ package com.eclipsesource.restfuse.internal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,7 +38,8 @@ public class CallbackServer_Test {
 
     public void starting( FrameworkMethod fakeTestMethod ) {
       Callback callbackAnnotation = fakeTestMethod.getAnnotation( Callback.class );
-      server = new CallbackServer( callbackAnnotation, CallbackServer_Test.this );
+      HttpTestStatement statement = mock( HttpTestStatement.class );
+      server = new CallbackServer( callbackAnnotation, CallbackServer_Test.this, statement );
       server.start();
       
       ClientResponse response = sendRequest();

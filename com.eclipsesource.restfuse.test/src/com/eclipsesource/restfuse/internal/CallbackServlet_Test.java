@@ -42,10 +42,12 @@ public class CallbackServlet_Test {
   private CallbackSerlvet callbackSerlvet;
   @Mock
   private CallbackResource resource;
+  @Mock
+  private HttpTestStatement statement;
 
   @Before
   public void setUp() {
-    callbackSerlvet = new CallbackSerlvet( resource );
+    callbackSerlvet = new CallbackSerlvet( resource, statement );
     mockResponse();
   }
   
@@ -119,6 +121,17 @@ public class CallbackServlet_Test {
     verify( resource ).head( any( Request.class ) );
     assertTrue( callbackSerlvet.wasCalled() );
   }
+  
+  @Test
+  public void testDelegatesFailure() throws ServletException, IOException {
+    when( resource.get( any( Request.class ) ) ).thenThrow( new IllegalStateException() );
+    HttpServletRequest req = mockHttpRequest();
+    HttpServletResponse resp = mock( HttpServletResponse.class );
+    
+    callbackSerlvet.doGet( req, resp );
+    
+    verify( statement ).failWithinCallback( any( Throwable.class ) );
+  }
 
   private void mockResponse() {
     Response response = mock( Response.class );
@@ -129,7 +142,7 @@ public class CallbackServlet_Test {
     when( resource.head( any( Request.class ) ) ).thenReturn( response );
     when( resource.options( any( Request.class ) ) ).thenReturn( response );
   }
-
+  
   private HttpServletRequest mockHttpRequest() throws IOException {
     HttpServletRequest req = mock( HttpServletRequest.class );
     when( req.getReader() ).thenReturn( new BufferedReader( new StringReader( "test" ) ) );

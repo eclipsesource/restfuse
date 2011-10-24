@@ -32,16 +32,22 @@ public class CallbackSerlvet extends HttpServlet {
   
   private boolean wasCalled;
   private final CallbackResource resource;
+  private final HttpTestStatement statement;
 
-  public CallbackSerlvet( CallbackResource resource ) {
+  public CallbackSerlvet( CallbackResource resource, HttpTestStatement statement ) {
     this.resource = resource;
+    this.statement = statement;
   }
   
   @Override
   protected void doGet( HttpServletRequest req, HttpServletResponse resp )
     throws ServletException, IOException
   {
-    createResponse( resp, resource.get( createRequest( req ) ) );
+    try {
+      createResponse( resp, resource.get( createRequest( req ) ) );
+    } catch( Throwable failure ) {
+      statement.failWithinCallback( failure );
+    }
     wasCalled = true;
   }
 
@@ -49,7 +55,11 @@ public class CallbackSerlvet extends HttpServlet {
   protected void doPost( HttpServletRequest req, HttpServletResponse resp )
     throws ServletException, IOException
   {
-    createResponse( resp, resource.post( createRequest( req ) ) );
+    try {
+      createResponse( resp, resource.post( createRequest( req ) ) );
+    } catch( Throwable failure ) {
+      statement.failWithinCallback( failure );
+    }
     wasCalled = true;
   }
   
@@ -57,7 +67,11 @@ public class CallbackSerlvet extends HttpServlet {
   protected void doPut( HttpServletRequest req, HttpServletResponse resp )
     throws ServletException, IOException
   {
-    createResponse( resp, resource.put( createRequest( req ) ) );
+    try {
+      createResponse( resp, resource.put( createRequest( req ) ) );
+    } catch( Throwable failure ) {
+      statement.failWithinCallback( failure );
+    }
     wasCalled = true;
   }
   
@@ -65,7 +79,11 @@ public class CallbackSerlvet extends HttpServlet {
   protected void doDelete( HttpServletRequest req, HttpServletResponse resp )
     throws ServletException, IOException
   {
-    createResponse( resp, resource.delete( createRequest( req ) ) );
+    try {
+      createResponse( resp, resource.delete( createRequest( req ) ) );
+    } catch( Throwable failure ) {
+      statement.failWithinCallback( failure );
+    }
     wasCalled = true;
   }
   
@@ -73,7 +91,11 @@ public class CallbackSerlvet extends HttpServlet {
   protected void doHead( HttpServletRequest req, HttpServletResponse resp )
     throws ServletException, IOException
   {
-    createResponse( resp, resource.head( createRequest( req ) ) );
+    try {
+      createResponse( resp, resource.head( createRequest( req ) ) );
+    } catch( Throwable failure ) {
+      statement.failWithinCallback( failure );
+    }
     wasCalled = true;
   }
   
@@ -81,7 +103,11 @@ public class CallbackSerlvet extends HttpServlet {
   protected void doOptions( HttpServletRequest req, HttpServletResponse resp )
     throws ServletException, IOException
   {
-    createResponse( resp, resource.options( createRequest( req ) ) );
+    try {
+      createResponse( resp, resource.options( createRequest( req ) ) );
+    } catch( Throwable failure ) {
+      statement.failWithinCallback( failure );
+    }
     wasCalled = true;
   }
 

@@ -28,9 +28,11 @@ public class CallbackServer {
   private String path;
   private Server server;
   private CallbackSerlvet servlet;
+  private final HttpTestStatement statement;
 
-  public CallbackServer( Callback callbackAnnotation, Object target ) {
+  public CallbackServer( Callback callbackAnnotation, Object target, HttpTestStatement statement ) {
     createResource( callbackAnnotation.resource(), target );
+    this.statement = statement;
     timeout = callbackAnnotation.timeout();
     port = callbackAnnotation.port();
     path = callbackAnnotation.path();
@@ -67,7 +69,7 @@ public class CallbackServer {
   private void configureServer() {
     server = new Server( port );
     Context context = new Context( server, "/", Context.SESSIONS );
-    servlet = new CallbackSerlvet( resource );
+    servlet = new CallbackSerlvet( resource, statement );
     context.addServlet( new ServletHolder( servlet ), path );
   }
 

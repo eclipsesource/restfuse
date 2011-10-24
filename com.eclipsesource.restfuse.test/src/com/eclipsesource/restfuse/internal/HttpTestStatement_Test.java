@@ -13,6 +13,7 @@ package com.eclipsesource.restfuse.internal;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -49,7 +50,8 @@ public class HttpTestStatement_Test {
     
     org.mortbay.jetty.servlet.Context context 
       = new org.mortbay.jetty.servlet.Context( server, "/", org.mortbay.jetty.servlet.Context.SESSIONS );
-    CallbackSerlvet servlet = new CallbackSerlvet( new DefaultCallbackResource() );
+    HttpTestStatement statement = mock( HttpTestStatement.class );
+    CallbackSerlvet servlet = new CallbackSerlvet( new DefaultCallbackResource(), statement );
     context.addServlet( new ServletHolder( servlet ), "/" );
     server.start();
     int timer = 0;

@@ -33,9 +33,11 @@ public class HttpTestStatement extends Statement {
   private final FrameworkMethod method;
   private final Object target;
   private final String baseUrl;
+  private final Object lock = new Object();
   private Response response;
   private CallbackServer callbackServer;
-
+  private volatile String errorMessage;
+  
   public HttpTestStatement( Statement base, 
                             FrameworkMethod method, 
                             Object target, 
@@ -66,7 +68,7 @@ public class HttpTestStatement extends Statement {
   private void startCallbackServerWhenAvailable() {
     Callback callbackAnnotation = method.getAnnotation( Callback.class );
     if( callbackAnnotation != null ) {
-      callbackServer = new CallbackServer( callbackAnnotation, target );
+      callbackServer = new CallbackServer( callbackAnnotation, target, this );
       callbackServer.start();
     }
   }
@@ -79,7 +81,8 @@ public class HttpTestStatement extends Statement {
           sleep();
           waitTime += WAIT_TIME;
         }
-      checkCallbackWasCalled();
+        checkForFailuresDuringCallback();
+        checkCallbackWasCalled();
       } finally {
         callbackServer.stop();
       }
@@ -92,6 +95,14 @@ public class HttpTestStatement extends Statement {
     } catch( InterruptedException shouldNotHappen ) {
       throw new IllegalStateException( "Could not wait until callback was called", 
                                        shouldNotHappen );
+    }
+  }
+
+  private void checkForFailuresDuringCallback() {
+    synchronized( lock ) {
+      if( errorMessage != null ) {
+        fail( errorMessage );
+      }
     }
   }
 
@@ -147,6 +158,12 @@ public class HttpTestStatement extends Statement {
       field.set( target, response );
     } catch( Exception exception ) {
       throw new IllegalStateException( "Could not inject response.", exception );
+    }
+  }
+
+  public void failWithinCallback( Throwable cause ) {
+    synchronized( lock ) {
+      errorMessage = cause.getMessage();
     }
   }
 

@@ -12,6 +12,7 @@ package com.eclipsesource.restfuse.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,8 @@ public class RequestConfiguration_Test {
   public static void setUp() throws Exception {
     server = new Server( 10043 );
     Context context = new Context( server, "/", Context.SESSIONS );
-    CallbackSerlvet servlet = new CallbackSerlvet( new TestResource() );
+    HttpTestStatement statement = mock( HttpTestStatement.class );
+    CallbackSerlvet servlet = new CallbackSerlvet( new TestResource(), statement );
     context.addServlet( new ServletHolder( servlet ), "/" );
     server.start();
     int timer = 0;
