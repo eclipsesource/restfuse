@@ -45,9 +45,6 @@ import com.eclipsesource.restfuse.Destination;
  * <code>{@link DefaultCallbackResource}</code> which implements all methods and returns a default 
  * response instead of sub classing the <code>{@link CallbackResource}</code> directly.</p>
  * 
- * <p><b>PLEASE NOTE:</b> The value of the <code>resource</code> attribute has to be an inner class
- * of the TestCase at the moment. This may change in the future.</p>
- * 
  * <p>A simple callback looks like this:
  * <pre>
  * <b>&#064;RunWith( HttpJUnitRunner.class )</b>
@@ -104,9 +101,6 @@ public @interface Callback {
    * <code>{@link CallbackResource}</code> directly you can also subclass 
    * <code>{@link DefaultCallbackResource}</code> which implements all methods and returns a 
    * default response.</p> 
-   * 
-   * <p><b>PLEASE NOTE:</b> The value of the <code>resource</code> attribute has to be an inner 
-   * class of the TestCase at the moment. This may change in the future.</p>
    * 
    * @see CallbackResource
    * @see DefaultCallbackResource
