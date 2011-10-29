@@ -7,12 +7,11 @@
  *
  * Contributors:
  *    Holger Staudacher - initial API and implementation
- ******************************************************************************/ 
-package com.eclipsesource.restfuse.internal;
+ ******************************************************************************/
+package com.eclipsesource.restfuse;
 
+import static com.eclipsesource.restfuse.Assert.assertNoContent;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 
 import org.junit.AfterClass;
@@ -22,36 +21,41 @@ import org.junit.Test;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.ServletHolder;
 
-import com.eclipsesource.restfuse.DefaultCallbackResource;
-import com.eclipsesource.restfuse.Destination;
-import com.eclipsesource.restfuse.Method;
-import com.eclipsesource.restfuse.Response;
-import com.eclipsesource.restfuse.Status;
 import com.eclipsesource.restfuse.annotations.Context;
 import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotations.Poll;
+import com.eclipsesource.restfuse.internal.CallbackSerlvet;
+import com.eclipsesource.restfuse.internal.HttpTestStatement;
 
 
-public class HttpTestStatement_Test {
+public class Poll_Test {
   
   private static final int TIMEOUT = 10;
-
   private static Server server;
-
+  private static int COUNT = 0;
+  
   @Rule
-  public Destination destination = new Destination( "http://localhost:10042/test" );
+  public Destination destination = new Destination( "http://localhost:10044/test" );
   
   @Context
-  private Response response;
-
+  private PollState pollState;
   
+  private static class TestResource extends DefaultCallbackResource {
+    @Override
+    public Response get( Request request ) {
+      COUNT++;
+      return super.get( request );
+    }
+  }
+
   @BeforeClass
   public static void setUp() throws Exception {
-    server = new Server( 10042 );
+    server = new Server( 10044 );
     
     org.mortbay.jetty.servlet.Context context 
       = new org.mortbay.jetty.servlet.Context( server, "/", org.mortbay.jetty.servlet.Context.SESSIONS );
     HttpTestStatement statement = mock( HttpTestStatement.class );
-    CallbackSerlvet servlet = new CallbackSerlvet( new DefaultCallbackResource(), statement );
+    CallbackSerlvet servlet = new CallbackSerlvet( new TestResource(), statement );
     context.addServlet( new ServletHolder( servlet ), "/" );
     server.start();
     int timer = 0;
@@ -72,23 +76,10 @@ public class HttpTestStatement_Test {
   }
   
   @Test
-  public void testResponseIsNull() {
-    HttpTestStatement statement = new HttpTestStatement( null, null, null, null );
-    
-    assertNull( statement.getResponse() );
-  }
-  
-  @Test
   @HttpTest( method = Method.GET, path = "/" ) 
+  @Poll( times = 5, interval = 500 )
   public void testSendsRequest() {
-    assertEquals( Status.NO_CONTENT.getStatusCode(), response.getStatus() );
-    assertNotNull( destination.getResponse() );
-  }
-  
-  @Test
-  @HttpTest( method = Method.GET, path = "/" ) 
-  public void testInjectsResponse() {
-    assertNotNull( response );
-    assertEquals( Status.NO_CONTENT.getStatusCode(), response.getStatus() );
+    assertNoContent( pollState.getResponse( pollState.getTimes() ) );
+    assertEquals( pollState.getTimes(), COUNT );
   }
 }

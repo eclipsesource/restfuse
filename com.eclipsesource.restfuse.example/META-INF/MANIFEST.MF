@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Restfuse Examples
+Bundle-SymbolicName: com.eclipsesource.restfuse.example
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: EclipseSource
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit;bundle-version="[4.8.2,5.0.0)",
+ com.eclipsesource.restfuse;bundle-version="1.0.0"

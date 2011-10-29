@@ -61,6 +61,11 @@ public class RequestConfiguration_Test {
   @AfterClass
   public static void tearDown() throws Exception {
     server.stop();
+    int timer = 0;
+    while( !server.isStopped() && timer < TIMEOUT ) {
+      Thread.sleep( 1000 );
+      timer++;
+    }
   }
   
   private static class TestResource extends DefaultCallbackResource {
