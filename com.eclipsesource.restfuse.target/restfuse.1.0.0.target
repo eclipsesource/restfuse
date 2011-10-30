@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
 
-<target name="restfuse.1.0.0" sequenceNumber="1">
+<target name="restfuse.1.0.0" sequenceNumber="2">
 <locations>
 <location includeAllPlatforms="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.mortbay.jetty.server" version="6.1.23.v201012071420"/>
-<unit id="org.mortbay.jetty.server.source" version="6.1.23.v201012071420"/>
 <unit id="org.mortbay.jetty.util.source" version="6.1.23.v201012071420"/>
 <unit id="org.mortbay.jetty.util" version="6.1.23.v201012071420"/>
 <unit id="org.hamcrest.core" version="1.1.0.v20090501071000"/>
@@ -26,5 +24,9 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
 </location>
 <location path="${project_loc:com.eclipsesource.restfuse.target}/bundles" type="Directory"/>
+<location includeAllPlatforms="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.equinox.serverside.sdk.feature.group" version="3.7.1.R37x_v20110907-7u7PFvHFN5LiN7iMI1T3vR_k8Ugx"/>
+<repository location="http://download.eclipse.org/releases/indigo"/>
+</location>
 </locations>
 </target>

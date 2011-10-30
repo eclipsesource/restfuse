@@ -1,0 +1,63 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>com.restfuse</groupId>
+  <artifactId>restfuse</artifactId>
+  <packaging>jar</packaging>
+  
+  <name>restfuse</name>
+  <version>1.0.0</version>
+  
+  <description>An open-source JUnit extension for automated HTTP/REST Tests</description>
+  <url>http://restfuse.com</url>
+  
+  <licenses>
+    <license>
+      <name>Eclipse Public License - v 1.0</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <scm>
+    <url>git://github.com/eclipsesource/restfuse.git</url>
+    <connection>scm:git:git://github.com/eclipsesource/restfuse.git</connection>
+  </scm>
+  
+  <developers>
+    <developer>
+      <id>hstaudacher</id>
+      <name>Holger Staudacher</name>
+      <email>hstaudacher@eclipsesource.com</email>
+    </developer>
+  </developers>
+
+	<build>
+		<resources>
+			<resource>
+				<includes>
+					<include>configuration.xml</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+    </dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-j2se6</artifactId>
+			<version>6.1.26</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-bundle</artifactId>
+			<version>1.9.1</version>
+		</dependency>
+  </dependencies>
+  
+</project>
