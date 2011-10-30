@@ -7,12 +7,12 @@ Checkout http://restfuse.com
 **License**  
 All files are licensed with the Eclipse Public License - v 1.0 (http://www.eclipse.org/legal/epl-v10.html)
 
-**Documentation**
+**Documentation**  
 Checkout http://restfuse.com/doc
 
-**Download**
+**Download**  
 Checkout http://restfuse.com/download
 
-**FAQ**
+**FAQ**  
 Checkout https://github.com/eclipsesource/restfuse/wiki/FAQ
 
