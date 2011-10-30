@@ -21,9 +21,9 @@ import com.eclipsesource.restfuse.Destination;
 
 
 /**
- * <p>The <code>Callback</code> can be used for asynchronous http tests. This means when the tested
- * service needs to send something back within a separate request. At this time the client needs to
- * act as a service to accept the incoming request. See 
+ * <p>The <code>Callback</code> can be used for asynchronous HTTP tests that need a callback. 
+ * This means when the tested service needs to send something back within a separate request. At 
+ * this time the client needs to act as a service to accept the incoming request. See 
  * <a href="http://wiki.webhooks.org/w/page/13385124/FrontPage">this wiki</a> for more information 
  * about webhooks.</p>
  * 

@@ -16,11 +16,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.eclipsesource.restfuse.Destination;
+import com.eclipsesource.restfuse.PollState;
+import com.eclipsesource.restfuse.Response;
 
 
 /**
- * The <code>Context</code> annotation can be used within a TestCase to get the response of an
- * http request injected after it succeeds.</p>
+ * The <code>Context</code> annotation can be used within a TestCase to get the 
+ * <code>{@link Response}</code> or a <code>{@link PollState}</code> of an
+ * HTTP request injected after it succeeds.</p>
  * 
  * <p>A simple example looks like this:
  * <pre>

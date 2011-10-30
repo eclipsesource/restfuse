@@ -42,6 +42,9 @@ public class Poll_Test {
   @Context
   private PollState pollState;
   
+  @Context
+  private Response response;
+  
   private static class TestResource extends DefaultCallbackResource {
     @Override
     public Response get( Request request ) {
@@ -101,6 +104,15 @@ public class Poll_Test {
   public void testSendsRequest() {
     assertNoContent( pollState.getResponse( pollState.getTimes() ) );
     assertEquals( pollState.getTimes(), COUNT );
+  }
+  
+  @Test
+  @HttpTest( method = Method.GET, path = "/" ) 
+  @Poll( times = 5, interval = 500 )
+  public void testInjectsResponse() {
+    Response currentResponse = pollState.getResponse( pollState.getTimes() );
+    
+    assertEquals( currentResponse, response );
   }
   
 }
