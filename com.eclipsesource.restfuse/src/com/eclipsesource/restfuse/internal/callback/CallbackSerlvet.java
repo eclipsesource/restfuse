@@ -8,7 +8,7 @@
  * Contributors:
  *    Holger Staudacher - initial API and implementation
  ******************************************************************************/ 
-package com.eclipsesource.restfuse.internal;
+package com.eclipsesource.restfuse.internal.callback;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,17 +26,18 @@ import com.eclipsesource.restfuse.CallbackResource;
 import com.eclipsesource.restfuse.MediaType;
 import com.eclipsesource.restfuse.Response;
 import com.eclipsesource.restfuse.Request;
+import com.eclipsesource.restfuse.internal.RequestImpl;
 
 
 public class CallbackSerlvet extends HttpServlet {
   
   private boolean wasCalled;
   private final CallbackResource resource;
-  private final HttpTestStatement statement;
+  private final CallbackStatement statement;
 
-  public CallbackSerlvet( CallbackResource resource, HttpTestStatement statement ) {
+  public CallbackSerlvet( CallbackResource resource, CallbackStatement callbackStatement ) {
     this.resource = resource;
-    this.statement = statement;
+    this.statement = callbackStatement;
   }
   
   @Override

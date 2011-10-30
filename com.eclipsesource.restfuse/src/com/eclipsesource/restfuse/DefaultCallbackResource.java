@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package com.eclipsesource.restfuse;
 
-import com.eclipsesource.restfuse.annotations.Callback;
+import com.eclipsesource.restfuse.annotation.Callback;
 
 
 /**

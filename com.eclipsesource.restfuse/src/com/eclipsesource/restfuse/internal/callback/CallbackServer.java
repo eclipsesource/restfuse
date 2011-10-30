@@ -8,7 +8,7 @@
  * Contributors:
  *    Holger Staudacher - initial API and implementation
  ******************************************************************************/ 
-package com.eclipsesource.restfuse.internal;
+package com.eclipsesource.restfuse.internal.callback;
 
 import java.lang.reflect.Constructor;
 
@@ -17,7 +17,7 @@ import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.ServletHolder;
 
 import com.eclipsesource.restfuse.CallbackResource;
-import com.eclipsesource.restfuse.annotations.Callback;
+import com.eclipsesource.restfuse.annotation.Callback;
 
 
 public class CallbackServer {
@@ -28,11 +28,11 @@ public class CallbackServer {
   private String path;
   private Server server;
   private CallbackSerlvet servlet;
-  private final HttpTestStatement statement;
+  private final CallbackStatement statement;
 
-  public CallbackServer( Callback callbackAnnotation, Object target, HttpTestStatement statement ) {
+  public CallbackServer( Callback callbackAnnotation, Object target, CallbackStatement callbackStatement ) {
     createResource( callbackAnnotation.resource(), target );
-    this.statement = statement;
+    this.statement = callbackStatement;
     timeout = callbackAnnotation.timeout();
     port = callbackAnnotation.port();
     path = callbackAnnotation.path();

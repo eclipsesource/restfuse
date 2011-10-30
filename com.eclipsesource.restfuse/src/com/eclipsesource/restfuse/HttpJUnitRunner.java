@@ -18,7 +18,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.HttpTest;
 
 
 /**

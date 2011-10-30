@@ -17,9 +17,9 @@ import com.eclipsesource.restfuse.Destination;
 import com.eclipsesource.restfuse.HttpJUnitRunner;
 import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.PollState;
-import com.eclipsesource.restfuse.annotations.Context;
-import com.eclipsesource.restfuse.annotations.HttpTest;
-import com.eclipsesource.restfuse.annotations.Poll;
+import com.eclipsesource.restfuse.annotation.Context;
+import com.eclipsesource.restfuse.annotation.HttpTest;
+import com.eclipsesource.restfuse.annotation.Poll;
 
 
 @RunWith( HttpJUnitRunner.class )

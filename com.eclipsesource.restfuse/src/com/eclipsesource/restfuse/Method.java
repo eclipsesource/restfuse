@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.restfuse;
 
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.HttpTest;
 
 /**
  * <p>The <code>Method</code> enumeration contains values that represents http methods. 

@@ -8,33 +8,37 @@
  * Contributors:
  *    Holger Staudacher - initial API and implementation
  ******************************************************************************/ 
-package com.eclipsesource.restfuse.annotations;
+package com.eclipsesource.restfuse.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.eclipsesource.restfuse.AuthenticationType;
+
+
 /**
- * <p>The <code>Header</code> annotation represents a single header attribute of an http request.
- * This headers can be set in a <code>{@link HttpTest}</code> annotation attached to a test method.
- * </p> 
- *
- * @see HttpTest
+ * <p>The <code>Authentication</code> can be used within a <code>{@link HttpTest}</code> annotation
+ * to send authentication information within an outgoing http request. Currently only BASIC and
+ * DIGEST authentication are supported.</p>
+ * 
+ * @see AuthenticationType
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( { ElementType.ANNOTATION_TYPE } )
-public @interface Header {
-
+public @interface Authentication {
+  
   /**
-   * <p>The <code>name</code> attribute represents the name of the header element which comes before 
-   * the ":" within a request header.</p>
+   * <p>The <code>type</code> attribute specifies the type of the authentication method. Currently
+   * only BASIC and DIGEST authentication are supported. This may change in future.</p>
+   * 
+   * @see AuthenticationType
    */
-  String name();
+  AuthenticationType type();
 
-  /**
-   * <p>The <code>value</code> attribute represents the value of the header element which comes 
-   * after the ":" within a request header.</p>
-   */
-  String value();
+  String user();
+
+  String password();
+  
 }

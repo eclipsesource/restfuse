@@ -32,9 +32,11 @@ import com.eclipsesource.restfuse.MediaType;
 import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.Request;
 import com.eclipsesource.restfuse.Response;
-import com.eclipsesource.restfuse.annotations.Authentication;
-import com.eclipsesource.restfuse.annotations.Header;
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.Authentication;
+import com.eclipsesource.restfuse.annotation.Header;
+import com.eclipsesource.restfuse.annotation.HttpTest;
+import com.eclipsesource.restfuse.internal.callback.CallbackSerlvet;
+import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
 
 
 public class RequestConfiguration_Test {
@@ -47,7 +49,7 @@ public class RequestConfiguration_Test {
   public static void setUp() throws Exception {
     server = new Server( 10043 );
     Context context = new Context( server, "/", Context.SESSIONS );
-    HttpTestStatement statement = mock( HttpTestStatement.class );
+    CallbackStatement statement = mock( CallbackStatement.class );
     CallbackSerlvet servlet = new CallbackSerlvet( new TestResource(), statement );
     context.addServlet( new ServletHolder( servlet ), "/" );
     server.start();

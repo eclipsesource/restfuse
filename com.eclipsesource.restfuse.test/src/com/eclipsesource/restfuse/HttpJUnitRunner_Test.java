@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.HttpTest;
 
 
 public class HttpJUnitRunner_Test {

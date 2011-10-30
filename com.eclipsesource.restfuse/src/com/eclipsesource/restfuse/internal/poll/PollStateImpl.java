@@ -8,7 +8,7 @@
  * Contributors:
  *    Holger Staudacher - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.restfuse.internal;
+package com.eclipsesource.restfuse.internal.poll;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,7 @@ import com.eclipsesource.restfuse.Response;
 public class PollStateImpl implements PollState {
   
   private final ArrayList<Response> responses;
+  private boolean wasAborted;
 
   public PollStateImpl() {
     responses = new ArrayList<Response>();
@@ -32,7 +33,11 @@ public class PollStateImpl implements PollState {
 
   @Override
   public void abort() {
-    // TODO Auto-generated method stub
+    wasAborted = true;
+  }
+  
+  boolean wasAborted() {
+    return wasAborted;
   }
 
   @Override
@@ -42,10 +47,10 @@ public class PollStateImpl implements PollState {
 
   @Override
   public Response getResponse( int attempt ) throws IllegalArgumentException {
-    if( ( attempt ) > responses.size() ) {
+    if( ( attempt - 1 ) > responses.size() ) {
       throw new IllegalArgumentException( "Response does not exist for attemt " + attempt );
     }
-    return responses.get( attempt );
+    return responses.get( attempt - 1 );
   }
 
   void addResponse( Response response ) {

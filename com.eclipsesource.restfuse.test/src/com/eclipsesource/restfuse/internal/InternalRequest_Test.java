@@ -31,6 +31,8 @@ import com.eclipsesource.restfuse.DefaultCallbackResource;
 import com.eclipsesource.restfuse.MediaType;
 import com.eclipsesource.restfuse.Request;
 import com.eclipsesource.restfuse.Response;
+import com.eclipsesource.restfuse.internal.callback.CallbackSerlvet;
+import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
 
 
 public class InternalRequest_Test {
@@ -43,7 +45,7 @@ public class InternalRequest_Test {
   public static void setUp() throws Exception {
     server = new Server( 10042 );
     Context context = new Context( server, "/", Context.SESSIONS );
-    HttpTestStatement statement = mock( HttpTestStatement.class );
+    CallbackStatement statement = mock( CallbackStatement.class );
     CallbackSerlvet servlet = new CallbackSerlvet( new TestResource(), statement );
     context.addServlet( new ServletHolder( servlet ), "/" );
     server.start();

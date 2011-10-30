@@ -8,11 +8,11 @@
  * Contributors:
  *    Holger Staudacher - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.restfuse.internal;
+package com.eclipsesource.restfuse.internal.poll;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.util.List;
@@ -64,8 +64,8 @@ public class PollStateImpl_Test {
     state.addResponse( mock( Response.class ) );
     state.addResponse( response2 );
     
-    assertSame( response, state.getResponse( 1 ) );
-    assertSame( response2, state.getResponse( 3 ) );
+    assertSame( response, state.getResponse( 2 ) );
+    assertSame( response2, state.getResponse( 4 ) );
   }
   
   @Test( expected = IllegalArgumentException.class )
@@ -93,6 +93,8 @@ public class PollStateImpl_Test {
   
   @Test
   public void testAbort() {
-    fail( "Abort needs to be implemented" );
+    state.abort();
+    
+    assertTrue( state.wasAborted() );
   }
 }

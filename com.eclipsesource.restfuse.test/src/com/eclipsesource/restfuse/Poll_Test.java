@@ -12,8 +12,10 @@ package com.eclipsesource.restfuse;
 
 import static com.eclipsesource.restfuse.Assert.assertNoContent;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -21,11 +23,11 @@ import org.junit.Test;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.ServletHolder;
 
-import com.eclipsesource.restfuse.annotations.Context;
-import com.eclipsesource.restfuse.annotations.HttpTest;
-import com.eclipsesource.restfuse.annotations.Poll;
-import com.eclipsesource.restfuse.internal.CallbackSerlvet;
-import com.eclipsesource.restfuse.internal.HttpTestStatement;
+import com.eclipsesource.restfuse.annotation.Context;
+import com.eclipsesource.restfuse.annotation.HttpTest;
+import com.eclipsesource.restfuse.annotation.Poll;
+import com.eclipsesource.restfuse.internal.callback.CallbackSerlvet;
+import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
 
 
 public class Poll_Test {
@@ -51,10 +53,9 @@ public class Poll_Test {
   @BeforeClass
   public static void setUp() throws Exception {
     server = new Server( 10044 );
-    
     org.mortbay.jetty.servlet.Context context 
       = new org.mortbay.jetty.servlet.Context( server, "/", org.mortbay.jetty.servlet.Context.SESSIONS );
-    HttpTestStatement statement = mock( HttpTestStatement.class );
+    CallbackStatement statement = mock( CallbackStatement.class );
     CallbackSerlvet servlet = new CallbackSerlvet( new TestResource(), statement );
     context.addServlet( new ServletHolder( servlet ), "/" );
     server.start();
@@ -75,6 +76,25 @@ public class Poll_Test {
     }
   }
   
+  @After
+  public void resetCounter() {
+    if( COUNT >= 5 ) {
+      COUNT = 0;
+    }
+  }
+  
+  @Test
+  @HttpTest( method = Method.GET, path = "/" ) 
+  @Poll( times = 5, interval = 500 )
+  public void testAbort() {
+    assertNoContent( pollState.getResponse( pollState.getTimes() ) );
+    if( COUNT == 3 ) {
+      pollState.abort();
+      COUNT = 0;
+    }
+    assertTrue( pollState.getTimes() <= 3 );
+  }
+
   @Test
   @HttpTest( method = Method.GET, path = "/" ) 
   @Poll( times = 5, interval = 500 )
@@ -82,4 +102,5 @@ public class Poll_Test {
     assertNoContent( pollState.getResponse( pollState.getTimes() ) );
     assertEquals( pollState.getTimes(), COUNT );
   }
+  
 }

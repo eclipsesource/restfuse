@@ -12,7 +12,6 @@ package com.eclipsesource.restfuse.internal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 
 import org.junit.AfterClass;
@@ -27,8 +26,10 @@ import com.eclipsesource.restfuse.Destination;
 import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.Response;
 import com.eclipsesource.restfuse.Status;
-import com.eclipsesource.restfuse.annotations.Context;
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.Context;
+import com.eclipsesource.restfuse.annotation.HttpTest;
+import com.eclipsesource.restfuse.internal.callback.CallbackSerlvet;
+import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
 
 
 public class HttpTestStatement_Test {
@@ -50,7 +51,7 @@ public class HttpTestStatement_Test {
     
     org.mortbay.jetty.servlet.Context context 
       = new org.mortbay.jetty.servlet.Context( server, "/", org.mortbay.jetty.servlet.Context.SESSIONS );
-    HttpTestStatement statement = mock( HttpTestStatement.class );
+    CallbackStatement statement = mock( CallbackStatement.class );
     CallbackSerlvet servlet = new CallbackSerlvet( new DefaultCallbackResource(), statement );
     context.addServlet( new ServletHolder( servlet ), "/" );
     server.start();
@@ -69,20 +70,6 @@ public class HttpTestStatement_Test {
       Thread.sleep( 1000 );
       timer++;
     }
-  }
-  
-  @Test
-  public void testResponseIsNull() {
-    HttpTestStatement statement = new HttpTestStatement( null, null, null, null );
-    
-    assertNull( statement.getResponse() );
-  }
-  
-  @Test
-  @HttpTest( method = Method.GET, path = "/" ) 
-  public void testSendsRequest() {
-    assertEquals( Status.NO_CONTENT.getStatusCode(), response.getStatus() );
-    assertNotNull( destination.getResponse() );
   }
   
   @Test

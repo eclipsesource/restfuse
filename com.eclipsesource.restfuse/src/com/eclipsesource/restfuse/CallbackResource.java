@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.eclipsesource.restfuse.annotations.Callback;
+import com.eclipsesource.restfuse.annotation.Callback;
 
 
 /**

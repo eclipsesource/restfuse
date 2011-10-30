@@ -8,7 +8,7 @@
  * Contributors:
  *    Holger Staudacher - initial API and implementation
  ******************************************************************************/
-package com.eclipsesource.restfuse.annotations;
+package com.eclipsesource.restfuse.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

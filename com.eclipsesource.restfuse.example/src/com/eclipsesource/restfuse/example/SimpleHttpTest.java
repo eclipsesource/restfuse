@@ -19,8 +19,8 @@ import com.eclipsesource.restfuse.Destination;
 import com.eclipsesource.restfuse.HttpJUnitRunner;
 import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.Response;
-import com.eclipsesource.restfuse.annotations.Context;
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.Context;
+import com.eclipsesource.restfuse.annotation.HttpTest;
 
 
 @RunWith( HttpJUnitRunner.class )

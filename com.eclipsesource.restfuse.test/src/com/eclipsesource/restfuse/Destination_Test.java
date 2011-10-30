@@ -11,7 +11,6 @@
 package com.eclipsesource.restfuse;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -22,7 +21,7 @@ import org.junit.rules.TestWatchman;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.HttpTest;
 import com.eclipsesource.restfuse.internal.HttpTestStatement;
 
 
@@ -79,20 +78,6 @@ public class Destination_Test {
   @HttpTest( method = Method.GET, path = "/" )
   public void testReturnsHttpTestStatement() {
     // nothing to do because the TestWatchman tests the Statement
-  }
-  
-  @Test( expected = IllegalStateException.class )
-  public void testFailsWithoutResponse() {
-    destination.getResponse();
-  }
-  
-  @Test
-  @HttpTest( method = Method.GET, path = "/" )
-  public void testReturnsResponseFromStatement() {
-    Response actualResponse = watchmanDestination.getResponse();
-    
-    // We can test that the response is null because if no statement exist an ISE would be thrown
-    assertNull( actualResponse );
   }
   
 }

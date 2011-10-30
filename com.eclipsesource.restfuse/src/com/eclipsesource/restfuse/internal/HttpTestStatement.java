@@ -10,8 +10,6 @@
  ******************************************************************************/ 
 package com.eclipsesource.restfuse.internal;
 
-import static org.junit.Assert.fail;
-
 import java.lang.reflect.Field;
 
 import org.junit.runners.model.FrameworkMethod;
@@ -19,24 +17,21 @@ import org.junit.runners.model.Statement;
 
 import com.eclipsesource.restfuse.Method;
 import com.eclipsesource.restfuse.Response;
-import com.eclipsesource.restfuse.annotations.Callback;
-import com.eclipsesource.restfuse.annotations.Context;
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.Callback;
+import com.eclipsesource.restfuse.annotation.Context;
+import com.eclipsesource.restfuse.annotation.HttpTest;
+import com.eclipsesource.restfuse.annotation.Poll;
+import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
+import com.eclipsesource.restfuse.internal.poll.PollStatement;
 import com.sun.jersey.api.client.ClientResponse;
 
 
 public class HttpTestStatement extends Statement {
 
-  private static final int WAIT_TIME = 100;
-  
   private final Statement base;
   private final FrameworkMethod method;
   private final Object target;
   private final String baseUrl;
-  private final Object lock = new Object();
-  private Response response;
-  private CallbackServer callbackServer;
-  private volatile String errorMessage;
   
   public HttpTestStatement( Statement base, 
                             FrameworkMethod method, 
@@ -49,73 +44,31 @@ public class HttpTestStatement extends Statement {
     this.baseUrl = baseUrl;
   }
 
-  public Response getResponse() {
-    return response;
-  }
-
   @Override
   public void evaluate() throws Throwable {
-    try {
-      startCallbackServerWhenAvailable();
-      sendRequest();
-      tryInjectResponse();
-      base.evaluate();
-    } finally {
-      waitForCallbackWhenAvailable();
-    }
+    Statement delegate = new BasicStatement( base, this );
+    if( needsCallback() ) {
+      delegate = new CallbackStatement( base, this, method, target );
+    } else if( needsPoll() ) {
+      delegate = new PollStatement( base, this, method, target );
+    } 
+    delegate.evaluate();
   }
 
-  private void startCallbackServerWhenAvailable() {
+  private boolean needsCallback() {
     Callback callbackAnnotation = method.getAnnotation( Callback.class );
-    if( callbackAnnotation != null ) {
-      callbackServer = new CallbackServer( callbackAnnotation, target, this );
-      callbackServer.start();
-    }
+    return callbackAnnotation != null;
   }
 
-  private void waitForCallbackWhenAvailable() {
-    if( callbackServer != null ) {
-      try {
-        int waitTime = 0;
-        while( !callbackServer.wasCalled() && waitTime <= callbackServer.getTimeout() ) {
-          sleep();
-          waitTime += WAIT_TIME;
-        }
-        checkForFailuresDuringCallback();
-        checkCallbackWasCalled();
-      } finally {
-        callbackServer.stop();
-      }
-    }
+  private boolean needsPoll() {
+    Poll pollAnnotation = method.getAnnotation( Poll.class );
+    return pollAnnotation != null;
   }
 
-  private void sleep() {
-    try {
-      Thread.sleep( WAIT_TIME );
-    } catch( InterruptedException shouldNotHappen ) {
-      throw new IllegalStateException( "Could not wait until callback was called", 
-                                       shouldNotHappen );
-    }
-  }
-
-  private void checkForFailuresDuringCallback() {
-    synchronized( lock ) {
-      if( errorMessage != null ) {
-        fail( errorMessage );
-      }
-    }
-  }
-
-  private void checkCallbackWasCalled() {
-    if( !callbackServer.wasCalled() ) {
-      fail( "Callback was not called" );
-    }
-  }
-
-  private void sendRequest() {
+  public Response sendRequest() {
     InternalRequest request = buildRequest();
     ClientResponse clientResponse = callService( request );
-    response = new ResponseImpl( clientResponse );
+    return new ResponseImpl( clientResponse );
   }
 
   private InternalRequest buildRequest() {
@@ -142,28 +95,22 @@ public class HttpTestStatement extends Statement {
     return result;
   }
 
-  private void tryInjectResponse() {
+  public void tryInjectResponse( Response response ) {
     Field[] fields = target.getClass().getDeclaredFields();
     for( Field field : fields ) {
-      Context responseAnnotation = field.getAnnotation( Context.class );
-      if( responseAnnotation != null && field.getType() == Response.class ) {
-        injectResponse( field );
+      Context contextAnnotation = field.getAnnotation( Context.class );
+      if( contextAnnotation != null && field.getType() == Response.class ) {
+        injectResponse( field, response );
       }
     }
   }
 
-  private void injectResponse( Field field ) {
+  private void injectResponse( Field field, Response response ) {
     field.setAccessible( true );
     try {
       field.set( target, response );
     } catch( Exception exception ) {
       throw new IllegalStateException( "Could not inject response.", exception );
-    }
-  }
-
-  public void failWithinCallback( Throwable cause ) {
-    synchronized( lock ) {
-      errorMessage = cause.getMessage();
     }
   }
 

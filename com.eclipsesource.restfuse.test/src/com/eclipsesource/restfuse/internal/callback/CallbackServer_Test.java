@@ -8,7 +8,7 @@
  * Contributors:
  *    Holger Staudacher - initial API and implementation
  ******************************************************************************/ 
-package com.eclipsesource.restfuse.internal;
+package com.eclipsesource.restfuse.internal.callback;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +22,9 @@ import org.junit.runners.model.FrameworkMethod;
 
 import com.eclipsesource.restfuse.DefaultCallbackResource;
 import com.eclipsesource.restfuse.Status;
-import com.eclipsesource.restfuse.annotations.Callback;
+import com.eclipsesource.restfuse.annotation.Callback;
+import com.eclipsesource.restfuse.internal.callback.CallbackServer;
+import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
@@ -38,7 +40,7 @@ public class CallbackServer_Test {
 
     public void starting( FrameworkMethod fakeTestMethod ) {
       Callback callbackAnnotation = fakeTestMethod.getAnnotation( Callback.class );
-      HttpTestStatement statement = mock( HttpTestStatement.class );
+      CallbackStatement statement = mock( CallbackStatement.class );
       server = new CallbackServer( callbackAnnotation, CallbackServer_Test.this, statement );
       server.start();
       

@@ -8,7 +8,7 @@
  * Contributors:
  *    Holger Staudacher - initial API and implementation
  ******************************************************************************/ 
-package com.eclipsesource.restfuse.internal;
+package com.eclipsesource.restfuse.internal.callback;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -34,6 +34,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.eclipsesource.restfuse.CallbackResource;
 import com.eclipsesource.restfuse.Request;
 import com.eclipsesource.restfuse.Response;
+import com.eclipsesource.restfuse.internal.callback.CallbackSerlvet;
+import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
 
 
 @RunWith( MockitoJUnitRunner.class )
@@ -43,7 +45,7 @@ public class CallbackServlet_Test {
   @Mock
   private CallbackResource resource;
   @Mock
-  private HttpTestStatement statement;
+  private CallbackStatement statement;
 
   @Before
   public void setUp() {

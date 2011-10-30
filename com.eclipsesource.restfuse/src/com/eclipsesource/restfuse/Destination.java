@@ -17,9 +17,8 @@ import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-import com.eclipsesource.restfuse.annotations.Callback;
-import com.eclipsesource.restfuse.annotations.Context;
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.Callback;
+import com.eclipsesource.restfuse.annotation.HttpTest;
 import com.eclipsesource.restfuse.internal.HttpTestStatement;
 
 /**
@@ -104,20 +103,4 @@ public class Destination implements MethodRule {
     return method.getAnnotation( HttpTest.class ) != null;
   }
 
-  /**
-   * <p>The <code>getResponse()</code> method can be used within a test method to pull the response
-   * instead of injecting them. To inject a <code>{@link Response}</code> the 
-   * <code>{@link Context}</code> can be used.</p>
-   * 
-   * @throws IllegalStateException When this method was called but the request has failed.
-   * 
-   * @see Context
-   */
-  public Response getResponse() {
-    if( requestStatement == null ) {
-      throw new IllegalStateException( "Test method does not contain enough " 
-                                       + "information to send the request" );
-    }
-    return requestStatement.getResponse();
-  }
 }

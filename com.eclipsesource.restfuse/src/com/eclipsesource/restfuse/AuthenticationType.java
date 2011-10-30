@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.eclipsesource.restfuse;
 
-import com.eclipsesource.restfuse.annotations.Authentication;
+import com.eclipsesource.restfuse.annotation.Authentication;
 
 
 /**

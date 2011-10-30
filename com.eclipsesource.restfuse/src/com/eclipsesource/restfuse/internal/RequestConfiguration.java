@@ -19,9 +19,9 @@ import org.junit.runners.model.FrameworkMethod;
 
 import com.eclipsesource.restfuse.AuthenticationType;
 import com.eclipsesource.restfuse.MediaType;
-import com.eclipsesource.restfuse.annotations.Authentication;
-import com.eclipsesource.restfuse.annotations.Header;
-import com.eclipsesource.restfuse.annotations.HttpTest;
+import com.eclipsesource.restfuse.annotation.Authentication;
+import com.eclipsesource.restfuse.annotation.Header;
+import com.eclipsesource.restfuse.annotation.HttpTest;
 
 
 public class RequestConfiguration {
