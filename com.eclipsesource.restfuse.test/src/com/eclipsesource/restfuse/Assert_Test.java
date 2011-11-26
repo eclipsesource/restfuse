@@ -11,24 +11,45 @@
 package com.eclipsesource.restfuse;
 
 import static com.eclipsesource.restfuse.Assert.assertAccepted;
+import static com.eclipsesource.restfuse.Assert.assertBadGateway;
 import static com.eclipsesource.restfuse.Assert.assertBadRequest;
 import static com.eclipsesource.restfuse.Assert.assertConflict;
+import static com.eclipsesource.restfuse.Assert.assertContinue;
 import static com.eclipsesource.restfuse.Assert.assertCreated;
+import static com.eclipsesource.restfuse.Assert.assertExpectationFailed;
 import static com.eclipsesource.restfuse.Assert.assertForbidden;
+import static com.eclipsesource.restfuse.Assert.assertFound;
+import static com.eclipsesource.restfuse.Assert.assertGatewayTimeout;
 import static com.eclipsesource.restfuse.Assert.assertGone;
+import static com.eclipsesource.restfuse.Assert.assertHTTPVersionNotSupported;
 import static com.eclipsesource.restfuse.Assert.assertInternalServerError;
+import static com.eclipsesource.restfuse.Assert.assertLengthRequired;
+import static com.eclipsesource.restfuse.Assert.assertMethodNotAllowed;
 import static com.eclipsesource.restfuse.Assert.assertMovedPermanently;
+import static com.eclipsesource.restfuse.Assert.assertMultipleChoices;
 import static com.eclipsesource.restfuse.Assert.assertNoContent;
+import static com.eclipsesource.restfuse.Assert.assertNonAuthoritativeInformation;
 import static com.eclipsesource.restfuse.Assert.assertNotAcceptable;
 import static com.eclipsesource.restfuse.Assert.assertNotFound;
+import static com.eclipsesource.restfuse.Assert.assertNotImplemented;
 import static com.eclipsesource.restfuse.Assert.assertNotModified;
 import static com.eclipsesource.restfuse.Assert.assertOk;
+import static com.eclipsesource.restfuse.Assert.assertPartialContent;
+import static com.eclipsesource.restfuse.Assert.assertPaymentRequired;
 import static com.eclipsesource.restfuse.Assert.assertPreconditionFailed;
+import static com.eclipsesource.restfuse.Assert.assertProxyAuthenticationRequired;
+import static com.eclipsesource.restfuse.Assert.assertRequestEntityTooLarge;
+import static com.eclipsesource.restfuse.Assert.assertRequestTimeout;
+import static com.eclipsesource.restfuse.Assert.assertRequestURITooLong;
+import static com.eclipsesource.restfuse.Assert.assertRequestedRangeNotSatisfiable;
+import static com.eclipsesource.restfuse.Assert.assertResetContent;
 import static com.eclipsesource.restfuse.Assert.assertSeeOther;
 import static com.eclipsesource.restfuse.Assert.assertServiceUnavailable;
+import static com.eclipsesource.restfuse.Assert.assertSwitchingProtocols;
 import static com.eclipsesource.restfuse.Assert.assertTemporaryRedirected;
 import static com.eclipsesource.restfuse.Assert.assertUnauthorized;
 import static com.eclipsesource.restfuse.Assert.assertUnsupportedMediaType;
+import static com.eclipsesource.restfuse.Assert.assertUseProxy;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
@@ -310,6 +331,300 @@ public class Assert_Test {
     when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
     
     assertServiceUnavailable( response );
+  }
+  
+  @Test
+  public void testAssertContinue() {
+    when( response.getStatus() ).thenReturn( Status.CONTINUE.getStatusCode() );
+    
+    assertContinue( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertContinueFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertContinue( response );
+  }
+  
+  @Test
+  public void testAssertSwitchingProtocols() {
+    when( response.getStatus() ).thenReturn( Status.SWITCHING_PROTOCOLS.getStatusCode() );
+    
+    assertSwitchingProtocols( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertSwitchingProtocolsFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertSwitchingProtocols( response );
+  }
+  
+  @Test
+  public void testAssertNonAuthoritativeInformation() {
+    when( response.getStatus() ).thenReturn( Status.NON_AUTHORITATIVE_INFORMATION.getStatusCode() );
+    
+    assertNonAuthoritativeInformation( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertNonAuthoritativeInformationFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertNonAuthoritativeInformation( response );
+  }
+  
+  @Test
+  public void testAssertResetContent() {
+    when( response.getStatus() ).thenReturn( Status.RESET_CONTENT.getStatusCode() );
+    
+    assertResetContent( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertResetContentFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertResetContent( response );
+  }
+  
+  @Test
+  public void testAssertPartialContent() {
+    when( response.getStatus() ).thenReturn( Status.PARTIAL_CONTENT.getStatusCode() );
+    
+    assertPartialContent( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertPartialContentFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertPartialContent( response );
+  }
+  
+  @Test
+  public void testAssertMultipleChoices() {
+    when( response.getStatus() ).thenReturn( Status.MULTIPLE_CHOICES.getStatusCode() );
+    
+    assertMultipleChoices( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertMultipleChoicesFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertMultipleChoices( response );
+  }
+  
+  @Test
+  public void testAssertFound() {
+    when( response.getStatus() ).thenReturn( Status.FOUND.getStatusCode() );
+    
+    assertFound( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertFoundFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertFound( response );
+  }
+  
+  @Test
+  public void testAssertUseProxy() {
+    when( response.getStatus() ).thenReturn( Status.USE_PROXY.getStatusCode() );
+    
+    assertUseProxy( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertUseProxyFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertUseProxy( response );
+  }
+  
+  @Test
+  public void testAssertPaymentRequired() {
+    when( response.getStatus() ).thenReturn( Status.PAYMENT_REQUIRED.getStatusCode() );
+    
+    assertPaymentRequired( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertPaymentRequiredFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertPaymentRequired( response );
+  }
+  
+  @Test
+  public void testAssertMethodNotAllowed() {
+    when( response.getStatus() ).thenReturn( Status.METHOD_NOT_ALLOWED.getStatusCode() );
+    
+    assertMethodNotAllowed( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertMethodNotAllowedFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertMethodNotAllowed( response );
+  }
+  
+  @Test
+  public void testAssertProxyAuthenticationRequired() {
+    when( response.getStatus() ).thenReturn( Status.PROXY_AUTHENTICATION_REQUIRED.getStatusCode() );
+    
+    assertProxyAuthenticationRequired( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertProxyAuthenticationRequiredFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertProxyAuthenticationRequired( response );
+  }
+  
+  @Test
+  public void testAssertRequestTimeout() {
+    when( response.getStatus() ).thenReturn( Status.REQUEST_TIMEOUT.getStatusCode() );
+    
+    assertRequestTimeout( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertRequestTimeoutFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertRequestTimeout( response );
+  }
+  
+  @Test
+  public void testAssertLengthRequired() {
+    when( response.getStatus() ).thenReturn( Status.LENGTH_REQUIRED.getStatusCode() );
+    
+    assertLengthRequired( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertLengthRequiredFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertLengthRequired( response );
+  }
+  
+  @Test
+  public void testAssertRequestEntityTooLarge() {
+    when( response.getStatus() ).thenReturn( Status.REQUEST_ENTITY_TOO_LARGE.getStatusCode() );
+    
+    assertRequestEntityTooLarge( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertRequestEntityTooLargeFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertRequestEntityTooLarge( response );
+  }
+  
+  @Test
+  public void testAssertRequestURITooLong() {
+    when( response.getStatus() ).thenReturn( Status.REQUEST_URI_TOO_LONG.getStatusCode() );
+    
+    assertRequestURITooLong( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertRequestURITooLongFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertRequestURITooLong( response );
+  }
+  
+  @Test
+  public void testAssertRequestedRangeNotSatisfiable() {
+    when( response.getStatus() ).thenReturn( Status.REQUEST_RANGE_NOT_SATISFIABLE.getStatusCode() );
+    
+    assertRequestedRangeNotSatisfiable( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertRequestedRangeNotSatisfiableFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertRequestedRangeNotSatisfiable( response );
+  }
+  
+  @Test
+  public void testAssertExpectationFailed() {
+    when( response.getStatus() ).thenReturn( Status.EXPECTATION_FAILED.getStatusCode() );
+    
+    assertExpectationFailed( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertExpectationFailedFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertExpectationFailed( response );
+  }
+  
+  @Test
+  public void testAssertNotImplemented() {
+    when( response.getStatus() ).thenReturn( Status.NOT_IMPLEMENTED.getStatusCode() );
+    
+    assertNotImplemented( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertNotImplementedFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertNotImplemented( response );
+  }
+  
+  @Test
+  public void testAssertBadGateway() {
+    when( response.getStatus() ).thenReturn( Status.BAD_GATEWAY.getStatusCode() );
+    
+    assertBadGateway( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertBadGatewayFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertBadGateway( response );
+  }
+  
+  @Test
+  public void testAssertGatewayTimeout() {
+    when( response.getStatus() ).thenReturn( Status.GATEWAY_TIMEOUT.getStatusCode() );
+    
+    assertGatewayTimeout( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertGatewayTimeoutFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertGatewayTimeout( response );
+  }
+  
+  @Test
+  public void testAssertHTTPVersionNotSupported() {
+    when( response.getStatus() ).thenReturn( Status.HTTP_VERSION_NOT_SUPPORTED.getStatusCode() );
+    
+    assertHTTPVersionNotSupported( response );
+  }
+  
+  @Test( expected = AssertionError.class )
+  public void testAssertHTTPVersionNotSupportedFails() {
+    when( response.getStatus() ).thenReturn( Status.ACCEPTED.getStatusCode() );
+    
+    assertHTTPVersionNotSupported( response );
   }
   
 }

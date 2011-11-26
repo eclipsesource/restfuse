@@ -20,6 +20,7 @@ import com.eclipsesource.restfuse.DefaultCallbackResource_Test;
 import com.eclipsesource.restfuse.Destination_Test;
 import com.eclipsesource.restfuse.HttpJUnitRunner_Test;
 import com.eclipsesource.restfuse.Poll_Test;
+import com.eclipsesource.restfuse.Status_Test;
 import com.eclipsesource.restfuse.internal.AuthenticationInfo_Test;
 import com.eclipsesource.restfuse.internal.HttpTestStatement_Test;
 import com.eclipsesource.restfuse.internal.InternalRequest_Test;
@@ -47,7 +48,8 @@ import com.eclipsesource.restfuse.internal.poll.PollStateImpl_Test;
   RequestImpl_Test.class,
   ResponseImpl_Test.class,
   PollStateImpl_Test.class,
-  Poll_Test.class
+  Poll_Test.class,
+  Status_Test.class
 } )
 
 public class AllRestfustTestSuite {
