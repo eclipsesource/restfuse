@@ -57,6 +57,8 @@ public class Destination implements MethodRule {
 
   private HttpTestStatement requestStatement;
   private final String baseUrl;
+  private String proxyHost;
+  private int proxyPort;
 
   /**
    * <p>Constructs a new <code>Destination</code> object. An url is needed as parameter which will
@@ -70,6 +72,26 @@ public class Destination implements MethodRule {
   public Destination( String baseUrl ) {
     checkBaseUrl( baseUrl );
     this.baseUrl = baseUrl;
+  }
+  
+  /**
+   * <p>Constructs a new <code>Destination</code> object and sets some proxy properties which will 
+   * be used when sending the HTTP request. An url is needed as parameter which will
+   * be used in the whole test to send requests to. The passed proxy properties has to conform with
+   * the proxy properties described here 
+   * http://docs.oracle.com/javase/1.5.0/docs/guide/net/properties.html</p>
+   * 
+   * @param baseUrl The url to send requests to.
+   * @param proxyHost The value of the http.proxyHost property.
+   * @param proxyPort The value of the http.proxyPort property.
+   * 
+   * @throws IllegalArgumentException Will be thrown when the <code>baseUrl</code> is null or 
+   * not a valid url.
+   */
+  public Destination( String baseUrl, String proxyHost, int proxyPort ) {
+    this( baseUrl );
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
   }
 
   private void checkBaseUrl( String baseUrl ) {
@@ -91,7 +113,7 @@ public class Destination implements MethodRule {
   {
     Statement result;
     if( hasAnnotation( method ) ) {
-      requestStatement = new HttpTestStatement( base, method, target, baseUrl );
+      requestStatement = new HttpTestStatement( base, method, target, baseUrl, proxyHost, proxyPort );
       result = requestStatement;
     } else {
       result = base;

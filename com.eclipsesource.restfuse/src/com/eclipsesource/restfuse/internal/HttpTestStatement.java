@@ -11,6 +11,7 @@
 package com.eclipsesource.restfuse.internal;
 
 import java.lang.reflect.Field;
+import java.util.Properties;
 
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
@@ -28,24 +29,49 @@ import com.sun.jersey.api.client.ClientResponse;
 
 public class HttpTestStatement extends Statement {
 
+  static final String HTTP_PROXY_HOST = "http.proxyHost";
+  static final String HTTP_PROXY_PORT = "http.proxyPort";
+
   private final Statement base;
   private final FrameworkMethod method;
   private final Object target;
   private final String baseUrl;
+  private final String proxyHost;
+  private final int proxyPort;
   
   public HttpTestStatement( Statement base, 
                             FrameworkMethod method, 
                             Object target, 
-                            String baseUrl ) 
+                            String baseUrl, 
+                            String proxyHost, 
+                            int proxyPort ) 
   {
     this.base = base;
     this.method = method;
     this.target = target;
     this.baseUrl = baseUrl;
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
   }
 
   @Override
   public void evaluate() throws Throwable {
+    setProxyProperties();
+    try {
+      doEvaluate();
+    } finally {
+      unsetProxyProperties();
+    }
+  }
+
+  private void setProxyProperties() {
+    if( proxyHost != null ) {
+      System.setProperty( HTTP_PROXY_HOST, proxyHost );
+      System.setProperty( HTTP_PROXY_PORT, String.valueOf( proxyPort ) );
+    }
+  }
+
+  private void doEvaluate() throws Throwable {
     Statement delegate = new BasicStatement( base, this );
     if( needsCallback() ) {
       delegate = new CallbackStatement( base, this, method, target );
@@ -53,6 +79,12 @@ public class HttpTestStatement extends Statement {
       delegate = new PollStatement( base, this, method, target );
     } 
     delegate.evaluate();
+  }
+
+  private void unsetProxyProperties() {
+    Properties properties = System.getProperties();
+    properties.remove( HTTP_PROXY_HOST );
+    properties.remove( HTTP_PROXY_PORT );
   }
 
   private boolean needsCallback() {
