@@ -59,6 +59,7 @@ public class Destination implements MethodRule {
   private final String baseUrl;
   private String proxyHost;
   private int proxyPort;
+  private RequestContext context;
 
   /**
    * <p>Constructs a new <code>Destination</code> object. An url is needed as parameter which will
@@ -69,9 +70,10 @@ public class Destination implements MethodRule {
    * @throws IllegalArgumentException Will be thrown when the <code>baseUrl</code> is null or 
    * not a valid url.
    */
-  public Destination( String baseUrl ) {
+  public Destination( String baseUrl) {
     checkBaseUrl( baseUrl );
     this.baseUrl = baseUrl;
+    this.context = new RequestContext();
   }
   
   /**
@@ -92,8 +94,17 @@ public class Destination implements MethodRule {
     this( baseUrl );
     this.proxyHost = proxyHost;
     this.proxyPort = proxyPort;
+    this.context = new RequestContext();
   }
 
+  /**
+   * Access to context to define additional request properties at runtime
+   * @return context to be manipulated
+   */
+  public RequestContext getRequestContext() {
+    return context;
+  }
+  
   private void checkBaseUrl( String baseUrl ) {
     if( baseUrl == null ) {
       throw new IllegalArgumentException( "baseUrl must not be null" );
@@ -113,7 +124,7 @@ public class Destination implements MethodRule {
   {
     Statement result;
     if( hasAnnotation( method ) ) {
-      requestStatement = new HttpTestStatement( base, method, target, baseUrl, proxyHost, proxyPort );
+      requestStatement = new HttpTestStatement( base, method, target, baseUrl, proxyHost, proxyPort, context );
       result = requestStatement;
     } else {
       result = base;

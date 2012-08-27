@@ -41,16 +41,19 @@ import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
 
 public class RequestConfiguration_Test {
   
-  private static final int TIMEOUT = 10;
+
+private static final int TIMEOUT = 10;
 
   private static Server server;
+  
+  private static TestResource resource = new TestResource();
   
   @BeforeClass
   public static void setUp() throws Exception {
     server = new Server( 10043 );
     Context context = new Context( server, "/", Context.SESSIONS );
     CallbackStatement statement = mock( CallbackStatement.class );
-    CallbackSerlvet servlet = new CallbackSerlvet( new TestResource(), statement );
+    CallbackSerlvet servlet = new CallbackSerlvet( resource, statement );
     context.addServlet( new ServletHolder( servlet ), "/" );
     server.start();
     int timer = 0;
@@ -72,33 +75,33 @@ public class RequestConfiguration_Test {
   
   private static class TestResource extends DefaultCallbackResource {
     
-    @Override
-    public Response post( Request request ) {
-      assertEquals( "test", request.getBody() );
-      Map<String, List<String>> headers = request.getHeaders();
-      assertTrue( headers.containsKey( "Authorization" ) );
-      assertEquals( "test", headers.get( "test" ).get( 0 ) );
-      assertEquals( MediaType.TEXT_PLAIN, request.getType() );
+	public Request request;
+	  
+	@Override
+	public Response post( Request request ) {
+  	  // store request to be used in test case
+	  this.request = request;
       return super.post( request );
-    }
-    
+    }    
   }
   
   @Rule
-  public Destination destination = new Destination( "http://localhost:10043/test" );
-  
+  public Destination destination = new Destination( "http://localhost:10043/test" );  
+    
   @Test
   @HttpTest( 
     method = Method.POST, 
-    headers = { @Header( name = "test", value = "test" ) }, 
+    headers = { @Header( name = "test", value = "value" ) }, 
     path = "/",
-    authentications = { @Authentication( type = AuthenticationType.BASIC, user = "test", password = "test" ) },
+    authentications = { @Authentication( type = AuthenticationType.BASIC, user = "test", password = "pass" ) },
     type = MediaType.TEXT_PLAIN,
     content = "test"
   )
-  public void fakeTestMethod() {
-    // test is done by resource
-  }
-  
-  
+  public void fakeTestMethod() {	
+      assertEquals( "test", resource.request.getBody() );
+      Map<String, List<String>> headers = resource.request.getHeaders();
+      assertTrue( headers.containsKey( "Authorization" ) );
+      assertEquals( "value", headers.get( "test" ).get( 0 ) );
+      assertEquals( MediaType.TEXT_PLAIN, resource.request.getType() );
+  }  
 }

@@ -25,6 +25,7 @@ import com.eclipsesource.restfuse.internal.AuthenticationInfo_Test;
 import com.eclipsesource.restfuse.internal.HttpTestStatement_Test;
 import com.eclipsesource.restfuse.internal.InternalRequest_Test;
 import com.eclipsesource.restfuse.internal.RequestConfiguration_Test;
+import com.eclipsesource.restfuse.internal.RequestContextConfiguration_Test;
 import com.eclipsesource.restfuse.internal.RequestImpl_Test;
 import com.eclipsesource.restfuse.internal.ResponseImpl_Test;
 import com.eclipsesource.restfuse.internal.callback.CallbackServer_Test;
@@ -45,6 +46,7 @@ import com.eclipsesource.restfuse.internal.poll.PollStateImpl_Test;
   HttpTestStatement_Test.class,
   InternalRequest_Test.class,
   RequestConfiguration_Test.class,
+  RequestContextConfiguration_Test.class,
   RequestImpl_Test.class,
   ResponseImpl_Test.class,
   PollStateImpl_Test.class,
