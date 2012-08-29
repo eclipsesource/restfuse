@@ -15,13 +15,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.ServletHolder;
 
 import com.eclipsesource.restfuse.annotation.Context;
 import com.eclipsesource.restfuse.annotation.HttpTest;
@@ -56,8 +57,7 @@ public class Poll_Test {
   @BeforeClass
   public static void setUp() throws Exception {
     server = new Server( 10044 );
-    org.mortbay.jetty.servlet.Context context 
-      = new org.mortbay.jetty.servlet.Context( server, "/", org.mortbay.jetty.servlet.Context.SESSIONS );
+    ServletContextHandler context = new ServletContextHandler( server, "/", ServletContextHandler.SESSIONS );
     CallbackStatement statement = mock( CallbackStatement.class );
     CallbackSerlvet servlet = new CallbackSerlvet( new TestResource(), statement );
     context.addServlet( new ServletHolder( servlet ), "/" );

@@ -18,14 +18,15 @@ import static org.mockito.Mockito.when;
 
 import java.lang.annotation.Annotation;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.ServletHolder;
 
 import com.eclipsesource.restfuse.DefaultCallbackResource;
 import com.eclipsesource.restfuse.Destination;
@@ -57,8 +58,7 @@ public class HttpTestStatement_Test {
   @BeforeClass
   public static void setUp() throws Exception {
     server = new Server( 10042 );
-    org.mortbay.jetty.servlet.Context context 
-      = new org.mortbay.jetty.servlet.Context( server, "/", org.mortbay.jetty.servlet.Context.SESSIONS );
+    ServletContextHandler context = new ServletContextHandler( server, "/", ServletContextHandler.SESSIONS );
     CallbackStatement statement = mock( CallbackStatement.class );
     CallbackSerlvet servlet = new CallbackSerlvet( new DefaultCallbackResource(), statement );
     context.addServlet( new ServletHolder( servlet ), "/" );

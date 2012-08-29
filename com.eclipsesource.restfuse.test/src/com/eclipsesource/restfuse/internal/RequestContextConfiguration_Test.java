@@ -14,13 +14,13 @@ import static org.mockito.Mockito.mock;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.ServletHolder;
 
 import com.eclipsesource.restfuse.AuthenticationType;
 import com.eclipsesource.restfuse.DefaultCallbackResource;
@@ -44,7 +44,7 @@ public class RequestContextConfiguration_Test {
   @BeforeClass
   public static void setUp() throws Exception {
     server = new Server( 10045 );
-    Context context = new Context( server, "/", Context.SESSIONS );
+    ServletContextHandler context = new ServletContextHandler( server, "/", ServletContextHandler.SESSIONS );
     CallbackStatement statement = mock( CallbackStatement.class );
     CallbackSerlvet servlet = new CallbackSerlvet( resource, statement );
     context.addServlet( new ServletHolder( servlet ), "/" );

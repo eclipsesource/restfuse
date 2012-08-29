@@ -12,9 +12,9 @@ package com.eclipsesource.restfuse.internal.callback;
 
 import java.lang.reflect.Constructor;
 
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import com.eclipsesource.restfuse.CallbackResource;
 import com.eclipsesource.restfuse.annotation.Callback;
@@ -74,7 +74,7 @@ public class CallbackServer {
 
   private void configureServer() {
     server = new Server( port );
-    Context context = new Context( server, "/", Context.SESSIONS );
+    ServletContextHandler context = new ServletContextHandler( server, "/", ServletContextHandler.SESSIONS );
     servlet = new CallbackSerlvet( resource, statement );
     context.addServlet( new ServletHolder( servlet ), path );
   }

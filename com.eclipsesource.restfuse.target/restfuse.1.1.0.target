@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="restfuse.1.0.0" sequenceNumber="3">
+<target name="restfuse.1.0.0" sequenceNumber="4">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.mortbay.jetty.util.source" version="6.1.23.v201012071420"/>
@@ -24,9 +24,9 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.equinox.serverside.sdk.feature.group" version="3.7.1.R37x_v20110907-7u7PFvHFN5LiN7iMI1T3vR_k8Ugx"/>
-<repository location="http://download.eclipse.org/releases/indigo"/>
+<unit id="org.eclipse.equinox.serverside.sdk.feature.group" version="3.8.0.v20120522-1841-9Q7dFszFYGis9uYGz0QodZP3fH0t"/>
+<repository location="http://download.eclipse.org/releases/juno"/>
 </location>
-<location path="${project_loc:com.eclipsesource.restfuse.target}/bundles-1.0.0" type="Directory"/>
+<location path="${project_loc:com.eclipsesource.restfuse.target}/bundles-1.1.0" type="Directory"/>
 </locations>
 </target>
