@@ -27,3 +27,4 @@ Import-Package: com.sun.jersey.api.client;version="[1.13.0,1.14.0)",
  org.junit.rules;version="[4.8.2,5.0.0)",
  org.junit.runners;version="[4.8.2,5.0.0)",
  org.junit.runners.model;version="[4.8.2,5.0.0)"
+Bundle-ActivationPolicy: lazy
