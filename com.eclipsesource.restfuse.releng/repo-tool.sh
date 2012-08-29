@@ -3,10 +3,10 @@
 # Tool to maintain composite repositories
 
 SCRIPTS_DIR=/Users/holger/dev/gitRepositories/restfuse/com.eclipsesource.restfuse.releng
-DOWNLOAD_DIR=/Users/holger/dev/gitRepositories/restfuse-gh-pages/
+DOWNLOAD_DIR=/Users/holger/dev/gitRepositories/restfuse-gh-pages
 
 if [ -z "$RUNTIME_DIR" ]; then
-  RUNTIME_DIR=/Applications/eclipse/eclipse-3.7
+  RUNTIME_DIR=/Applications/eclipse/eclipse-3.6.2
 fi
 
 mode=

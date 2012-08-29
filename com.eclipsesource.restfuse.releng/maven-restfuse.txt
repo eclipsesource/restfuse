@@ -1,10 +1,10 @@
 
 1) Check localy
-mvn install:install-file -Dfile=com.eclipsesource.restfuse_1.0.0.201110302017.jar -DgroupId=com.restfuse -DartifactId=com.eclipsesource.restfuse -Dversion=1.0.0 -Dpackaging=jar -DpomFile=pom.xml
+mvn install:install-file -Dfile=com.eclipsesource.restfuse_1.1.0.201208290955.jar -DgroupId=com.restfuse -DartifactId=com.eclipsesource.restfuse -Dversion=1.1.0 -Dpackaging=jar -DpomFile=com.eclipsesource.restfuse_1.1.0.201208290955.xml
 
 2) Upload to Nexus:
- mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=com.eclipsesource.restfuse_1.0.0.201110302017.xml -Dfile=com.eclipsesource.restfuse_1.0.0.201110302017.jar 
+mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=com.eclipsesource.restfuse_1.1.0.201208290955.xml -Dfile=com.eclipsesource.restfuse_1.1.0.201208290955.jar 
 
- mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=com.eclipsesource.restfuse_1.0.0.201110302017.xml -Dfile=com.eclipsesource.restfuse_1.0.0.201110302017-sources.jar -Dclassifier=sources
+mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=com.eclipsesource.restfuse_1.1.0.201208290955.xml -Dfile=com.eclipsesource.restfuse_1.1.0.201208290955-sources.jar -Dclassifier=sources
 
- mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=com.eclipsesource.restfuse_1.0.0.201110302017.xml -Dfile=com.eclipsesource.restfuse_1.0.0.201110302017-javadoc.jar -Dclassifier=javadoc
+mvn gpg:sign-and-deploy-file -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/ -DrepositoryId=sonatype-nexus-staging -DpomFile=com.eclipsesource.restfuse_1.1.0.201208290955.xml -Dfile=com.eclipsesource.restfuse_1.1.0.201208290955-javadoc.jar -Dclassifier=javadoc

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.eclipsesource.restfuse.additional.feature"
-      label="restfuse requirements"
+      label="restfuse dependencies"
       version="1.1.0.qualifier"
       provider-name="EclipseSource">
 
@@ -25,20 +25,6 @@
 
    <plugin
          id="javax.servlet"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.sun.jersey.jersey-client"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.sun.jersey.jersey-core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -116,6 +102,20 @@
 
    <plugin
          id="org.eclipse.jetty.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.sun.jersey.client"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.sun.jersey.core"
          download-size="0"
          install-size="0"
          version="0.0.0"

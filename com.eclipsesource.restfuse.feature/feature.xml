@@ -17,6 +17,10 @@
       %license
    </license>
 
+   <includes
+         id="com.eclipsesource.restfuse.additional.feature"
+         version="0.0.0"/>
+
    <plugin
          id="com.eclipsesource.restfuse"
          download-size="0"
