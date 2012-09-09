@@ -11,6 +11,7 @@
 package com.eclipsesource.restfuse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -43,6 +44,7 @@ public class HttpJUnitRunner extends BlockJUnit4ClassRunner {
         result.add( method );
       }
     }
+    Collections.sort( result, new HttpOrderComparator() );
     return result;
   }
   

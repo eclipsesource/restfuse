@@ -102,7 +102,7 @@ public class HttpTestStatement_Test {
     assertNull( System.getProperty( HttpTestStatement.HTTP_PROXY_HOST ) );
     assertNull( System.getProperty( HttpTestStatement.HTTP_PROXY_PORT ) );
   }
-
+  
   private HttpTest createAnnotation() {
     HttpTest annotation = new HttpTest() {
       
@@ -145,6 +145,11 @@ public class HttpTestStatement_Test {
       public Authentication[] authentications() {
         return null;
       }
+
+	  @Override
+	  public int order() {
+		return 0;
+	  }
     };
     return annotation;
   }
