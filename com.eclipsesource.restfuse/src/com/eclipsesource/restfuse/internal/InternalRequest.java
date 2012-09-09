@@ -11,15 +11,12 @@
 package com.eclipsesource.restfuse.internal;
 
 import java.io.InputStream;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 import javax.ws.rs.core.MediaType;
 
 import com.eclipsesource.restfuse.AuthenticationType;
@@ -27,12 +24,9 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.client.filter.HTTPDigestAuthFilter;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
 
 
 public class InternalRequest {
@@ -133,29 +127,13 @@ public class InternalRequest {
   }
 
   private Builder createRequest() {
-    Client client = createIgnoreHttpsValidationClient();
+    Client client = ClientHelper.createClient();
     addAuthentication( client );
     WebResource resource = client.resource( url );
     String type = mediaType != null ? mediaType : MediaType.WILDCARD;
     Builder builder = resource.type( type );
     builder = addHeaders( builder );
     return builder;
-  }
-
-  private Client createIgnoreHttpsValidationClient() {
-    ClientConfig config = new DefaultClientConfig();
-    try {
-      HTTPSProperties httpProperties = new HTTPSProperties( new HostnameVerifier() {
-        @Override
-        public boolean verify( String arg0, SSLSession arg1 ) {
-          return true;
-        }
-      } );
-      config.getProperties().put( HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, httpProperties );
-    } catch( NoSuchAlgorithmException shouldNotHappen ) {
-      throw new IllegalStateException( shouldNotHappen );
-    }
-    return Client.create( config );
   }
 
   private void addAuthentication( Client client ) {
