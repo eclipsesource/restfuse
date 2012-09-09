@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: restfuse tests
 Bundle-SymbolicName: com.eclipsesource.restfuse.test
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-Vendor: EclipseSource
-Fragment-Host: com.eclipsesource.restfuse;bundle-version="1.1.0"
+Fragment-Host: com.eclipsesource.restfuse;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit;bundle-version="[4.8.0,4.10.0)",
  org.mockito;bundle-version="1.8.4",
