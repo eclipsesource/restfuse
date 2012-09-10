@@ -1,0 +1,40 @@
+<project name="restfuse JaCoCo XML Converter" xmlns:jacoco="antlib:org.jacoco.ant" default="report">
+
+	<property name="result.dir" location="${basedir}/../target"/>
+	<property name="result.report.dir" location="${result.dir}/jacoco"/>
+	<property name="result.exec.file" location="${result.dir}/jacoco.exec"/>
+
+	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+		<classpath path="${basedir}/../lib/jacocoant.jar" />
+	</taskdef>
+
+	<target name="report">
+		<mkdir dir="${result.report.dir}"/>
+		<mkdir dir="${result.report.dir}/html"/>
+		<!-- Step 3. Create coverage report -->
+		<jacoco:report>
+			<!-- This task needs the collected execution data and ... -->
+			<executiondata>
+				<file file="${result.exec.file}" />
+			</executiondata>
+			<!-- the class files and optional source files ... -->
+			<structure name="pomobo server">
+				<classfiles>
+					<fileset dir="${basedir}/../../../" casesensitive="yes">
+					  <include name="**/target/classes/com/eclipsesource/**/*.class"/>
+					  <exclude name="**/*Test*"/>
+					</fileset>
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+	         <fileset dir="${basedir}/../../../" casesensitive="yes">
+	            <include name="**/src/com/eclipsesource/**/*.java"/>
+	            <exclude name="**/src/**/*Test*"/>
+	          </fileset>
+				</sourcefiles>
+			</structure>
+			<!-- to produce reports in different formats. -->
+			<html destdir="${result.report.dir}/html"/>
+			<xml destfile="${result.report.dir}/jacoco.xml" />
+		</jacoco:report>
+	</target>
+</project>

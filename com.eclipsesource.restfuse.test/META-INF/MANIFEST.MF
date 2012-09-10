@@ -7,6 +7,4 @@ Bundle-Vendor: EclipseSource
 Fragment-Host: com.eclipsesource.restfuse;bundle-version="1.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.junit;bundle-version="[4.8.0,4.10.0)",
- org.mockito;bundle-version="1.8.4",
- org.objenesis;bundle-version="1.0.0",
- org.hamcrest;bundle-version="1.1.0"
+ org.mockito.mockito-all;bundle-version="1.9.0"
