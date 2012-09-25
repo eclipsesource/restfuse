@@ -25,8 +25,10 @@ import com.sun.jersey.api.client.ClientResponse;
 public class ResponseImpl implements Response {
 
   private final ClientResponse clientResponse;
+  private final String url;
 
-  public ResponseImpl( ClientResponse clientResponse ) {
+  public ResponseImpl( String url, ClientResponse clientResponse ) {
+    this.url = url;
     this.clientResponse = clientResponse;
   }
   
@@ -60,5 +62,9 @@ public class ResponseImpl implements Response {
   @Override
   public int getStatus() {
     return clientResponse.getStatus();
+  }
+  
+  public String getUrl() {
+    return url;
   }
 }

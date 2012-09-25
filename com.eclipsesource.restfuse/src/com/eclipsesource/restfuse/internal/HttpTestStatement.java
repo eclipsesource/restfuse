@@ -104,7 +104,7 @@ public class HttpTestStatement extends Statement {
   public Response sendRequest() {
     InternalRequest request = buildRequest();
     ClientResponse clientResponse = callService( request );
-    return new ResponseImpl( clientResponse );
+    return new ResponseImpl( request.getUrl(), clientResponse );
   }
 
   private InternalRequest buildRequest() {

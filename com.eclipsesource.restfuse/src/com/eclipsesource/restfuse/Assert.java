@@ -11,6 +11,9 @@
 package com.eclipsesource.restfuse;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import com.eclipsesource.restfuse.internal.ResponseImpl;
 
 
 /**
@@ -190,7 +193,32 @@ public final class Assert {
   }
   
   private static void doCheckStatus( Status expected, Response response ) {
-    assertEquals( expected.getStatusCode(), response.getStatus() );
+    if( response instanceof ResponseImpl ) {
+      assertStatusEquals( getDetailedErrorMessage( expected, response ), 
+                          expected.getStatusCode(), 
+                          response.getStatus() );
+    } else {
+      assertEquals( expected.getStatusCode(), response.getStatus() );
+    }
+  }
+
+  private static void assertStatusEquals( String detailedErrorMessage, int expected, int actual ) {
+    if( expected != actual ) {
+      fail( detailedErrorMessage );
+    }
+  }
+
+  private static String getDetailedErrorMessage( Status expected, Response response ) {
+    StringBuilder builder = new StringBuilder();
+    builder.append( "Sent request to " + ( ( ResponseImpl )response ).getUrl() );
+    builder.append( "\n" );
+    builder.append( "Response code did mot match expectation:" );
+    builder.append( "\n" );
+    builder.append( "Expected " + expected.getStatusCode() + " (" + expected.toString() + ") " );
+    builder.append( "but was " + response.getStatus() );
+    builder.append( " (" + Status.forStatusCode( response.getStatus() ) + ")" );
+    builder.append( "\n\n" );
+    return builder.toString();
   }
   
   private Assert() {

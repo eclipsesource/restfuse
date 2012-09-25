@@ -160,7 +160,6 @@ public class InternalRequest {
     return result;
   }
 
-  // For testing purpose only
   String getUrl(){
     return url;
   }

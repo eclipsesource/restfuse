@@ -45,7 +45,7 @@ public class ResponseImpl_Test {
     when( clientResponse.getType() ).thenReturn( MediaType.APPLICATION_ATOM_XML_TYPE );
     MultivaluedMap<String, String> headers = mockHeaders();
     when( clientResponse.getHeaders() ).thenReturn( headers );
-    response = new ResponseImpl( clientResponse );
+    response = new ResponseImpl( "http://localhost", clientResponse );
   }
 
   @SuppressWarnings("unchecked")

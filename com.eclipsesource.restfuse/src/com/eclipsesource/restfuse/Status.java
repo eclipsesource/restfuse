@@ -79,7 +79,7 @@ public enum Status {
     this.reason = reasonPhrase;
     assignFamily();
   }
-
+  
   private void assignFamily() {
     switch( code / 100 ) {
       case 1:
@@ -109,6 +109,16 @@ public enum Status {
   
   public Family getFamily() {
     return family;
+  }
+  
+  public static Status forStatusCode( int code ) {
+    Status[] values = Status.values();
+    for( Status status : values ) {
+      if( status.getStatusCode() == code ) {
+        return status;
+      }
+    }
+    return null;
   }
 
   @Override
