@@ -50,7 +50,7 @@ public class InternalRequest {
   public void setContent( InputStream content ) {
     this.content = content;
   }
-
+  
   public void addHeader( String name, String value ) {
     List<String> param = headers.get( name );
     if( param == null ) {
@@ -158,5 +158,10 @@ public class InternalRequest {
       }
     }
     return result;
+  }
+
+  // For testing purpose only
+  String getUrl(){
+    return url;
   }
 }

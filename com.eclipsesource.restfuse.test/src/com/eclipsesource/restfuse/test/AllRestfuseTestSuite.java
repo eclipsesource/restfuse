@@ -56,5 +56,5 @@ import com.eclipsesource.restfuse.internal.poll.PollStateImpl_Test;
   HttpTestStatementOrder_Test.class
 } )
 
-public class AllRestfustTestSuite {
+public class AllRestfuseTestSuite {
 }

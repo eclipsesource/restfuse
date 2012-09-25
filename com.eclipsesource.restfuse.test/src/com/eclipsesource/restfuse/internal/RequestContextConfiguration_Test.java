@@ -82,7 +82,7 @@ public class RequestContextConfiguration_Test {
 
   private Destination getDestination() {
     Destination destination = new Destination( "http://localhost:10045/test" );
-    destination.getRequestContext().headers.put( "test", "value" );
+    destination.getRequestContext().addHeader( "test", "value" );
     return destination;
   }
 

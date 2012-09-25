@@ -27,7 +27,7 @@ public class DynamicHeaderTest {
 
   private Destination getDestination() {
     Destination destination = new Destination( "http://restfuse.com" );
-    destination.getRequestContext().headers.put( "Cookie", "name:value" );
+    destination.getRequestContext().addHeader( "Cookie", "name:value" );
     return destination;
   }
 }
