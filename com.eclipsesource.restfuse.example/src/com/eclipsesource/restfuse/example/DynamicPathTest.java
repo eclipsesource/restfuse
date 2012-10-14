@@ -33,7 +33,8 @@ public class DynamicPathTest {
   }
 
   private Destination getDestination() {
-    Destination destination = new Destination( "http://search.maven.org/remotecontent?filepath="
+    Destination destination = new Destination( this, 
+                                               "http://search.maven.org/remotecontent?filepath="
     		                                   + "com/restfuse/com.eclipsesource.restfuse/{version}/" );
     RequestContext context = destination.getRequestContext();
     context.addPathSegment( "file", "com.eclipsesource.restfuse-1.1.1" ).addPathSegment( "version", "1.1.1" );

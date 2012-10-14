@@ -17,8 +17,8 @@ import static org.mockito.Mockito.mock;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestWatchman;
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.eclipsesource.restfuse.annotation.HttpTest;
@@ -32,38 +32,44 @@ public class Destination_Test {
 
   @Before
   public void setUp() {
-    destination = new Destination( "http://localhost" );
+    destination = new Destination( this, "http://localhost" );
   }
   
   @Test( expected = IllegalArgumentException.class )
   public void testBaseUrlCannotBeNull() {
-    new Destination( null );
+    new Destination( this, null );
   }
   
   @Test( expected = IllegalArgumentException.class )
   public void testBaseUrlHasToBeAnUrl() {
-    new Destination( "foo" );
+    new Destination( this, "foo" );
+  }
+  
+  @Test( expected = IllegalArgumentException.class )
+  public void testTestObjectIsNull() throws Exception {
+    new Destination( null, "http://localhost" );
   }
   
   @Test
   public void testApplyReturnsBaseWhenNoAnnotationsPresent() {
     Statement base = mock( Statement.class );
-    FrameworkMethod method = mock( FrameworkMethod.class );
+    Description description = mock( Description.class );
     
-    Statement statement = destination.apply( base, method, this );
+    Statement statement = destination.apply( base, description );
     
     assertEquals( base, statement );
   }
   
   @Rule
-  public TestWatchman watchman = new TestWatchman() {
+  public TestWatcher watcher = new TestWatcher() {
 
-    public void starting( FrameworkMethod method ) {
-      HttpTest annotation = method.getAnnotation( HttpTest.class );
+    @Override
+    public void starting( Description description ) {
+      HttpTest annotation = description.getAnnotation( HttpTest.class );
       if( annotation != null ) {
         Statement base = mock( Statement.class );
-        watchmanDestination = new Destination( "http://localhost" );
-        Statement statement = watchmanDestination.apply( base, method, this );
+        watchmanDestination = new Destination( new Object(), "http://localhost" );
+        Statement statement = watchmanDestination.apply( base, description );
         
         checkStatement( statement );
       }
@@ -77,7 +83,7 @@ public class Destination_Test {
   @Test
   @HttpTest( method = Method.GET, path = "/" )
   public void testReturnsHttpTestStatement() {
-    // nothing to do because the TestWatchman tests the Statement
+    // nothing to do because the TestWatcher tests the Statement
   }
   
 }

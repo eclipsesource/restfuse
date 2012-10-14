@@ -31,7 +31,7 @@ public class HttpTestStatementOrder_Test {
   private static final int TIMEOUT = 10;
   private static Server server;
   @Rule
-  public Destination destination = new Destination( "http://localhost:10042/test" );
+  public Destination destination = new Destination( this, "http://localhost:10042/test" );
   @Context
   private Response response;
 

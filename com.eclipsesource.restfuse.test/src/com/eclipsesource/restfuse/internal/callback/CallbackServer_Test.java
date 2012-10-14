@@ -17,14 +17,12 @@ import static org.mockito.Mockito.mock;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestWatchman;
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 
 import com.eclipsesource.restfuse.DefaultCallbackResource;
 import com.eclipsesource.restfuse.Status;
 import com.eclipsesource.restfuse.annotation.Callback;
-import com.eclipsesource.restfuse.internal.callback.CallbackServer;
-import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
@@ -36,10 +34,11 @@ public class CallbackServer_Test {
   private CallbackServer server;
 
   @Rule
-  public TestWatchman watchman = new TestWatchman() {
+  public TestWatcher watchman = new TestWatcher() {
 
-    public void starting( FrameworkMethod fakeTestMethod ) {
-      Callback callbackAnnotation = fakeTestMethod.getAnnotation( Callback.class );
+    @Override
+    public void starting( Description description ) {
+      Callback callbackAnnotation = description.getAnnotation( Callback.class );
       CallbackStatement statement = mock( CallbackStatement.class );
       server = new CallbackServer( callbackAnnotation, CallbackServer_Test.this, statement );
       server.start();
@@ -50,7 +49,7 @@ public class CallbackServer_Test {
     }
     
     @Override
-    public void finished( FrameworkMethod method ) {
+    public void finished( Description description ) {
       try {
         sendRequest();
         fail();

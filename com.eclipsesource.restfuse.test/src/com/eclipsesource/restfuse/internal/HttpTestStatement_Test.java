@@ -25,7 +25,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.eclipsesource.restfuse.DefaultCallbackResource;
@@ -49,7 +49,7 @@ public class HttpTestStatement_Test {
   private static Server server;
 
   @Rule
-  public Destination destination = new Destination( "http://localhost:10042/test" );
+  public Destination destination = new Destination( this, "http://localhost:10042/test" );
   
   @Context
   private Response response;
@@ -90,12 +90,12 @@ public class HttpTestStatement_Test {
   @Test
   public void testRemovesProxyProperties() throws Throwable {
     Statement base = mock( Statement.class );
-    FrameworkMethod method = mock( FrameworkMethod.class );
+    Description description = mock( Description.class );
     HttpTest annotation = createAnnotation();
-    when( method.getAnnotation( HttpTest.class ) ).thenReturn( annotation );
+    when( description.getAnnotation( HttpTest.class ) ).thenReturn( annotation );
     Object target = new Object();
     HttpTestStatement statement 
-      = new HttpTestStatement( base, method, target, "http://localhost", "http://proxy.com", 8080, null );
+      = new HttpTestStatement( base, description, target, "http://localhost", "http://proxy.com", 8080, null );
     
     statement.evaluate();
     

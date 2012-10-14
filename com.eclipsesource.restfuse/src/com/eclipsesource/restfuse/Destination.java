@@ -13,8 +13,8 @@ package com.eclipsesource.restfuse;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.eclipsesource.restfuse.annotation.Callback;
@@ -53,13 +53,14 @@ import com.eclipsesource.restfuse.internal.HttpTestStatement;
  * @see HttpTest
  * @see Callback
  */
-public class Destination implements MethodRule {
+public class Destination implements TestRule {
 
   private HttpTestStatement requestStatement;
   private final String baseUrl;
   private String proxyHost;
   private int proxyPort;
   private RequestContext context;
+  private Object testObject;
 
   /**
    * <p>Constructs a new <code>Destination</code> object. An url is needed as parameter which will
@@ -70,8 +71,10 @@ public class Destination implements MethodRule {
    * @throws IllegalArgumentException Will be thrown when the <code>baseUrl</code> is null or 
    * not a valid url.
    */
-  public Destination( String baseUrl) {
+  public Destination( Object testObject, String baseUrl) {
     checkBaseUrl( baseUrl );
+    checkTestObject( testObject );
+    this.testObject = testObject;
     this.baseUrl = baseUrl;
     this.context = new RequestContext();
   }
@@ -90,8 +93,8 @@ public class Destination implements MethodRule {
    * @throws IllegalArgumentException Will be thrown when the <code>baseUrl</code> is null or 
    * not a valid url.
    */
-  public Destination( String baseUrl, String proxyHost, int proxyPort ) {
-    this( baseUrl );
+  public Destination( Object testObject, String baseUrl, String proxyHost, int proxyPort ) {
+    this( testObject, baseUrl );
     this.proxyHost = proxyHost;
     this.proxyPort = proxyPort;
     this.context = new RequestContext();
@@ -116,15 +119,20 @@ public class Destination implements MethodRule {
     }
   }
 
+  private void checkTestObject( Object testObject ) {
+    if( testObject == null ) {
+      throw new IllegalArgumentException( "testObject must not be null." );
+    }
+  }
+
   @Override
   /**
    * <p><b>Not meant for public use. This method will be invoked by the JUnit framework.</b></p>
    */
-  public Statement apply( Statement base, FrameworkMethod method, Object target )
-  {
+  public Statement apply( Statement base, Description description ) {
     Statement result;
-    if( hasAnnotation( method ) ) {
-      requestStatement = new HttpTestStatement( base, method, target, baseUrl, proxyHost, proxyPort, context );
+    if( hasAnnotation( description ) ) {
+      requestStatement = new HttpTestStatement( base, description, testObject, baseUrl, proxyHost, proxyPort, context );
       result = requestStatement;
     } else {
       result = base;
@@ -132,8 +140,9 @@ public class Destination implements MethodRule {
     return result;
   }
 
-  private boolean hasAnnotation( FrameworkMethod method ) {
-    return method.getAnnotation( HttpTest.class ) != null;
+  private boolean hasAnnotation( Description description ) {
+    return description.getAnnotation( HttpTest.class ) != null;
   }
+
 
 }

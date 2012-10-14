@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.runner.Description;
 
 import com.eclipsesource.restfuse.AuthenticationType;
 import com.eclipsesource.restfuse.MediaType;
@@ -30,17 +30,17 @@ public class RequestConfiguration {
 
   private static final String PATH_SEPARATOR = "/";
   private final String baseUrl;
-  private final FrameworkMethod method;
+  private final Description description;
   private final Object target;
 
-  public RequestConfiguration( String baseUrl, FrameworkMethod method, Object target ) {
+  public RequestConfiguration( String baseUrl, Description description, Object target ) {
     this.baseUrl = baseUrl;
-    this.method = method;
+    this.description = description;
     this.target = target;
   }
 
   public InternalRequest createRequest( RequestContext context ) {
-    HttpTest call = method.getAnnotation( HttpTest.class );
+    HttpTest call = description.getAnnotation( HttpTest.class );
     String rawPath = combineUrlAndPath( baseUrl, call.path() );
     InternalRequest request = new InternalRequest( substituePathSegments( rawPath, context ) );
     addAuthentication( call, request );

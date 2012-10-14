@@ -28,7 +28,7 @@ import com.eclipsesource.restfuse.annotation.HttpTest;
 public class AuthenticationTest {
   
   @Rule
-  public Destination destination = new Destination( "https://eclipsesource.com" );
+  public Destination destination = new Destination( this, "https://eclipsesource.com" );
   
   @Context
   private Response response;

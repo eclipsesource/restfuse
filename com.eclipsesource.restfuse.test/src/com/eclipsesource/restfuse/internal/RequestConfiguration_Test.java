@@ -26,7 +26,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.runner.Description;
 
 import com.eclipsesource.restfuse.AuthenticationType;
 import com.eclipsesource.restfuse.DefaultCallbackResource;
@@ -89,7 +89,7 @@ public class RequestConfiguration_Test {
   }
 
   @Rule
-  public Destination destination = new Destination("http://localhost:10043/test");
+  public Destination destination = new Destination(this, "http://localhost:10043/test");
 
   @Test
   @HttpTest( method = Method.POST, 
@@ -109,11 +109,11 @@ public class RequestConfiguration_Test {
 
   @Test
   public void testPathWithSegments() {
-    FrameworkMethod method = mock( FrameworkMethod.class );
+    Description description = mock( Description.class );
     HttpTest annotation = createAnnotation( "/people/{id}/{name}" );
-    when( method.getAnnotation( HttpTest.class ) ).thenReturn( annotation );
+    when( description.getAnnotation( HttpTest.class ) ).thenReturn( annotation );
     RequestConfiguration config = new RequestConfiguration( "http://www.fake.com",
-                                                            method,
+                                                            description,
                                                             new Object() );
     RequestContext context = new RequestContext();
 
@@ -126,7 +126,7 @@ public class RequestConfiguration_Test {
   
   @Test( expected = IllegalStateException.class )
   public void testPathWithNonExistingSegments() {
-    FrameworkMethod method = mock( FrameworkMethod.class );
+    Description method = mock( Description.class );
     HttpTest annotation = createAnnotation( "/people/{invalid}/name" );
     when( method.getAnnotation( HttpTest.class ) ).thenReturn( annotation );
     RequestConfiguration config = new RequestConfiguration( "http://www.fake.com",

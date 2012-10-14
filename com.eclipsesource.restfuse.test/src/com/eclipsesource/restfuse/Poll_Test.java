@@ -38,7 +38,7 @@ public class Poll_Test {
   private static int COUNT = 0;
   
   @Rule
-  public Destination destination = new Destination( "http://localhost:10044/test" );
+  public Destination destination = new Destination( this, "http://localhost:10044/test" );
   
   @Context
   private PollState pollState;

@@ -13,7 +13,7 @@ package com.eclipsesource.restfuse.internal;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.eclipsesource.restfuse.Method;
@@ -34,7 +34,7 @@ public class HttpTestStatement extends Statement {
   static final String HTTP_PROXY_PORT = "http.proxyPort";
 
   private final Statement base;
-  private final FrameworkMethod method;
+  private final Description description;
   private final Object target;
   private final String baseUrl;
   private final String proxyHost;
@@ -42,7 +42,7 @@ public class HttpTestStatement extends Statement {
   private final RequestContext context;
   
   public HttpTestStatement( Statement base, 
-                            FrameworkMethod method, 
+                            Description description, 
                             Object target, 
                             String baseUrl, 
                             String proxyHost, 
@@ -50,7 +50,7 @@ public class HttpTestStatement extends Statement {
                             RequestContext context) 
   {
     this.base = base;
-    this.method = method;
+    this.description = description;
     this.target = target;
     this.baseUrl = baseUrl;
     this.proxyHost = proxyHost;
@@ -78,9 +78,9 @@ public class HttpTestStatement extends Statement {
   private void doEvaluate() throws Throwable {
     Statement delegate = new BasicStatement( base, this );
     if( needsCallback() ) {
-      delegate = new CallbackStatement( base, this, method, target );
+      delegate = new CallbackStatement( base, this, description, target );
     } else if( needsPoll() ) {
-      delegate = new PollStatement( base, this, method, target );
+      delegate = new PollStatement( base, this, description, target );
     } 
     delegate.evaluate();
   }
@@ -92,12 +92,12 @@ public class HttpTestStatement extends Statement {
   }
 
   private boolean needsCallback() {
-    Callback callbackAnnotation = method.getAnnotation( Callback.class );
+    Callback callbackAnnotation = description.getAnnotation( Callback.class );
     return callbackAnnotation != null;
   }
 
   private boolean needsPoll() {
-    Poll pollAnnotation = method.getAnnotation( Poll.class );
+    Poll pollAnnotation = description.getAnnotation( Poll.class );
     return pollAnnotation != null;
   }
 
@@ -108,12 +108,12 @@ public class HttpTestStatement extends Statement {
   }
 
   private InternalRequest buildRequest() {
-    RequestConfiguration requestConfiguration = new RequestConfiguration( baseUrl, method, target );
+    RequestConfiguration requestConfiguration = new RequestConfiguration( baseUrl, description, target );
     return requestConfiguration.createRequest( context );
   }
 
   private ClientResponse callService( InternalRequest request ) {
-    Method requestMethod = method.getAnnotation( HttpTest.class ).method();
+    Method requestMethod = description.getAnnotation( HttpTest.class ).method();
     ClientResponse result = null;
     if( requestMethod.equals( Method.GET ) ) {
       result = request.get();

@@ -12,7 +12,7 @@ package com.eclipsesource.restfuse.internal.callback;
 
 import static org.junit.Assert.fail;
 
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.eclipsesource.restfuse.Response;
@@ -25,7 +25,7 @@ public class CallbackStatement extends Statement {
   private static final int WAIT_TIME = 100;
   
   private HttpTestStatement base;
-  private FrameworkMethod method;
+  private Description description;
   private Object target;
   private CallbackServer callbackServer;
   private final Object lock = new Object();
@@ -35,12 +35,12 @@ public class CallbackStatement extends Statement {
 
   public CallbackStatement( Statement statement,
                             HttpTestStatement base, 
-                            FrameworkMethod method, 
+                            Description description, 
                             Object target ) 
   {
     this.statement = statement;
     this.base = base;
-    this.method = method;
+    this.description = description;
     this.target = target;
   }
 
@@ -57,7 +57,7 @@ public class CallbackStatement extends Statement {
   }
   
   private void startCallbackServerWhenAvailable() {
-    Callback callbackAnnotation = method.getAnnotation( Callback.class );
+    Callback callbackAnnotation = description.getAnnotation( Callback.class );
     if( callbackAnnotation != null ) {
       callbackServer = new CallbackServer( callbackAnnotation, target, this );
       callbackServer.start();

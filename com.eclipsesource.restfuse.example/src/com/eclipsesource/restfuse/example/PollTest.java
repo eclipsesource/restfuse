@@ -30,7 +30,7 @@ import com.eclipsesource.restfuse.annotation.Poll;
 public class PollTest {
 
   @Rule
-  public Destination restfuse = new Destination( "http://restfuse.com" );
+  public Destination restfuse = new Destination( this, "http://restfuse.com" );
   
   @Context
   private PollState pollState;

@@ -81,7 +81,7 @@ public class RequestContextConfiguration_Test {
   public Destination destination = getDestination();
 
   private Destination getDestination() {
-    Destination destination = new Destination( "http://localhost:10045/test" );
+    Destination destination = new Destination( this, "http://localhost:10045/test" );
     destination.getRequestContext().addHeader( "test", "value" );
     return destination;
   }

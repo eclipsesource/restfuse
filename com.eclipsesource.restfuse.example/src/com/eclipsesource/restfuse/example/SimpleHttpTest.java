@@ -27,7 +27,7 @@ import com.eclipsesource.restfuse.annotation.HttpTest;
 public class SimpleHttpTest {
   
   @Rule
-  public Destination restfuse = new Destination( "http://restfuse.com" );
+  public Destination restfuse = new Destination( this, "http://restfuse.com" );
   
   @Context
   private Response response;

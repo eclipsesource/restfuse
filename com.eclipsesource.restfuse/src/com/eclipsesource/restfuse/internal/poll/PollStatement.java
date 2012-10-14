@@ -12,7 +12,7 @@ package com.eclipsesource.restfuse.internal.poll;
 
 import java.lang.reflect.Field;
 
-import org.junit.runners.model.FrameworkMethod;
+import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 import com.eclipsesource.restfuse.PollState;
@@ -33,13 +33,13 @@ public class PollStatement extends Statement {
 
   public PollStatement( Statement statement, 
                         HttpTestStatement base, 
-                        FrameworkMethod method, 
+                        Description description, 
                         Object target ) 
   {
     this.statement = statement;
     this.base = base;
     this.target = target;
-    Poll pollAnnotation = method.getAnnotation( Poll.class );
+    Poll pollAnnotation = description.getAnnotation( Poll.class );
     interval = pollAnnotation.interval();
     times = pollAnnotation.times();
     pollState = new PollStateImpl();
