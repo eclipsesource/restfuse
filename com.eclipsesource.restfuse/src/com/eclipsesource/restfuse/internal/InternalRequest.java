@@ -20,13 +20,8 @@ import java.util.Set;
 import javax.ws.rs.core.MediaType;
 
 import com.eclipsesource.restfuse.AuthenticationType;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.filter.ClientFilter;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.sun.jersey.api.client.filter.HTTPDigestAuthFilter;
+import com.eclipsesource.restfuse.Response;
+import com.github.kevinsawicki.http.HttpRequest;
 
 
 public class InternalRequest {
@@ -66,98 +61,94 @@ public class InternalRequest {
     authentications.add( authentication );
   }
 
-  public ClientResponse get() {
-    ClientResponse result;
-    try {
-      result = createRequest().get( ClientResponse.class );
-    } catch( Exception e ) {
-      throw new IllegalStateException( e );
-    }
-    return result;
+  public Response get() {
+    HttpRequest request = HttpRequest.get( url );
+    addContentType( request );
+    addHeaders( request );
+    addAuthentication( request );
+    sendRequest( request );
+    return new ResponseImpl( request );
   }
 
-  public ClientResponse post() {
-    ClientResponse result;
-    try {
-      result = createRequest().post( ClientResponse.class, content );
-    } catch( Exception e ) {
-      throw new IllegalStateException( e );
-    }
-    return result;
+  public Response post() {
+    HttpRequest request = HttpRequest.post( url );
+    addContentType( request );
+    addHeaders( request );
+    addAuthentication( request );
+    request.send( content );
+    sendRequest( request );
+    return new ResponseImpl( request );
   }
   
-  public ClientResponse delete() {
-    ClientResponse result;
-    try {
-      result = createRequest().delete( ClientResponse.class );
-    } catch( Exception e ) {
-      throw new IllegalStateException( e );
-    }
-    return result;
+  public Response delete() {
+    HttpRequest request = HttpRequest.delete( url );
+    addContentType( request );
+    addHeaders( request );
+    addAuthentication( request );
+    sendRequest( request );
+    return new ResponseImpl( request );
   }
   
-  public ClientResponse put() {
-    ClientResponse result;
-    try {
-      result = createRequest().put( ClientResponse.class, content );
-    } catch( Exception e ) {
-      throw new IllegalStateException( e );
-    }
-    return result;
+  public Response put() {
+    HttpRequest request = HttpRequest.put( url );
+    addContentType( request );
+    addHeaders( request );
+    addAuthentication( request );
+    request.send( content );
+    sendRequest( request );
+    return new ResponseImpl( request );
   }
   
-  public ClientResponse head() {
-    ClientResponse result;
-    try {
-      result = createRequest().head();
-    } catch( Exception e ) {
-      throw new IllegalStateException( e );
-    }
-    return result;
+  public Response head() {
+    HttpRequest request = HttpRequest.head( url );
+    addContentType( request );
+    addHeaders( request );
+    addAuthentication( request );
+    sendRequest( request );
+    return new ResponseImpl( request );
   }
   
-  public ClientResponse options() {
-    ClientResponse result;
-    try {
-      result = createRequest().options( ClientResponse.class );
-    } catch( Exception e ) {
-      throw new IllegalStateException( e );
-    }
-    return result;
+  public Response options() {
+    HttpRequest request = HttpRequest.options( url );
+    addContentType( request );
+    addHeaders( request );
+    addAuthentication( request );
+    sendRequest( request );
+    return new ResponseImpl( request );
   }
 
-  private Builder createRequest() {
-    Client client = ClientHelper.createClient();
-    addAuthentication( client );
-    WebResource resource = client.resource( url );
+
+  private void addContentType( HttpRequest request ) {
     String type = mediaType != null ? mediaType : MediaType.WILDCARD;
-    Builder builder = resource.type( type );
-    builder = addHeaders( builder );
-    return builder;
+    request.contentType( type );
   }
 
-  private void addAuthentication( Client client ) {
-    for( AuthenticationInfo authentication : authentications ) {
-      ClientFilter filter = null;
-      if( authentication.getType().equals( AuthenticationType.BASIC ) ) {
-        filter = new HTTPBasicAuthFilter( authentication.getUser(), authentication.getPassword() );
-      } else if( authentication.getType().equals( AuthenticationType.DIGEST ) ) {
-        filter = new HTTPDigestAuthFilter( authentication.getUser(), authentication.getPassword() );
-      }
-      client.addFilter( filter );
-    }
-  }
-
-  private Builder addHeaders( Builder builder ) {
-    Builder result = builder;
+  private void addHeaders( HttpRequest request ) {
     Set<String> keySet = headers.keySet();
     for( String key : keySet ) {
       List<String> values = headers.get( key );
+      StringBuilder builder = new StringBuilder();
       for( String value : values ) {
-        result = result.header( key, value );
+        builder.append( value + "," );
+      }
+      request.header( key, builder.substring( 0, builder.length() - 1 ) );
+    }
+    request.trustAllCerts();
+    request.trustAllHosts();
+  }
+
+  private void addAuthentication( HttpRequest request ) {
+    for( AuthenticationInfo authentication : authentications ) {
+      if( authentication.getType().equals( AuthenticationType.BASIC ) ) {
+        request.basic( authentication.getUser(), authentication.getPassword() );
+      } else if( authentication.getType().equals( AuthenticationType.DIGEST ) ) {
+        // TODO: implement digest auth
       }
     }
-    return result;
+  }
+
+  private void sendRequest( HttpRequest request ) {
+    request.code();
   }
 
   String getUrl(){

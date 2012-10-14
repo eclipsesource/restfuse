@@ -23,7 +23,7 @@ import com.eclipsesource.restfuse.annotation.Callback;
 public class DefaultCallbackResource extends CallbackResource {
   
   private static Response defaultResponse 
-    = CallbackResource.createResponse( Status.NO_CONTENT, MediaType.WILDCARD, null, null );
+    = CallbackResource.createResponse( null, Status.NO_CONTENT, MediaType.WILDCARD, null, null );
 
   @Override
   public Response get( Request request ) {

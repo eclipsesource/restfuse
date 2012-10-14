@@ -99,11 +99,14 @@ public class RequestContextConfiguration_Test {
   }
 
   @Test
-  @HttpTest(method = Method.POST, path = "/", authentications = {
-    @Authentication(type = AuthenticationType.BASIC, user = "test", password = "pass")
-  }, type = MediaType.TEXT_PLAIN, content = "test", headers = {
-    @Header(name = "test", value = "new-value")
-  })
+  @HttpTest(
+    method = Method.POST, 
+    path = "/", 
+    authentications = { @Authentication(type = AuthenticationType.BASIC, user = "test", password = "pass") }, 
+    type = MediaType.TEXT_PLAIN, 
+    content = "test", 
+    headers = { @Header(name = "test", value = "new-value") }
+  )
   public void overrideHeaderTestMethod() {
     assertEquals( "test", resource.request.getBody() );
     Map<String, List<String>> headers = resource.request.getHeaders();

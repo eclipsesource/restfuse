@@ -37,12 +37,15 @@ public abstract class CallbackResource {
     private final MediaType contentType;
     private final String body;
     private final Map<String, List<String>> headers;
+    private String url;
 
-    public CallbackResponse( Status status, 
+    public CallbackResponse( String url,
+                             Status status, 
                              MediaType contentType, 
                              String body, 
                              Map<String, List<String>> headers ) 
     {
+      this.url = url;
       this.status = status;
       this.contentType = contentType;
       this.body = body;
@@ -64,6 +67,11 @@ public abstract class CallbackResource {
     }
 
     @Override
+    public String getBody() {
+      return body;
+    }
+
+    @Override
     public MediaType getType() {
       return contentType;
     }
@@ -81,15 +89,21 @@ public abstract class CallbackResource {
     public int getStatus() {
       return status.getStatusCode();
     }
+
+    @Override
+    public String getUrl() {
+      return url;
+    }
     
   }
   
-  static Response createResponse( Status status, 
-                                         MediaType contentType, 
-                                         String body, 
-                                         Map<String, List<String>> headers ) 
+  static Response createResponse( String url,
+                                  Status status, 
+                                  MediaType contentType, 
+                                  String body, 
+                                  Map<String, List<String>> headers ) 
   {
-    return new CallbackResponse( status, contentType, body, headers );
+    return new CallbackResponse( url, status, contentType, body, headers );
   }
 
   /**

@@ -10,10 +10,7 @@
  ******************************************************************************/ 
 package com.eclipsesource.restfuse;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
-import com.eclipsesource.restfuse.internal.ResponseImpl;
 
 
 /**
@@ -193,13 +190,9 @@ public final class Assert {
   }
   
   private static void doCheckStatus( Status expected, Response response ) {
-    if( response instanceof ResponseImpl ) {
-      assertStatusEquals( getDetailedErrorMessage( expected, response ), 
-                          expected.getStatusCode(), 
-                          response.getStatus() );
-    } else {
-      assertEquals( expected.getStatusCode(), response.getStatus() );
-    }
+    assertStatusEquals( getDetailedErrorMessage( expected, response ),
+                        expected.getStatusCode(),
+                        response.getStatus() );
   }
 
   private static void assertStatusEquals( String detailedErrorMessage, int expected, int actual ) {
@@ -210,7 +203,7 @@ public final class Assert {
 
   private static String getDetailedErrorMessage( Status expected, Response response ) {
     StringBuilder builder = new StringBuilder();
-    builder.append( "Sent request to " + ( ( ResponseImpl )response ).getUrl() );
+    builder.append( "Sent request to " + response.getUrl() );
     builder.append( "\n" );
     builder.append( "Response code did mot match expectation:" );
     builder.append( "\n" );

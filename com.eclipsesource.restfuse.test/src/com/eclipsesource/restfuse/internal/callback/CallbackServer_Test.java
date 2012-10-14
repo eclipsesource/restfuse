@@ -21,12 +21,11 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 import com.eclipsesource.restfuse.DefaultCallbackResource;
+import com.eclipsesource.restfuse.Response;
 import com.eclipsesource.restfuse.Status;
 import com.eclipsesource.restfuse.annotation.Callback;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
+import com.eclipsesource.restfuse.internal.ResponseImpl;
+import com.github.kevinsawicki.http.HttpRequest;
 
 
 public class CallbackServer_Test {
@@ -43,7 +42,7 @@ public class CallbackServer_Test {
       server = new CallbackServer( callbackAnnotation, CallbackServer_Test.this, statement );
       server.start();
       
-      ClientResponse response = sendRequest();
+      Response response = sendRequest();
       assertEquals( Status.NO_CONTENT.getStatusCode(), response.getStatus() );
       assertEquals( 10000, server.getTimeout() );
     }
@@ -53,13 +52,13 @@ public class CallbackServer_Test {
       try {
         sendRequest();
         fail();
-      } catch( ClientHandlerException expected ) {}
+      } catch( Exception expected ) {}
     }
 
-    private ClientResponse sendRequest() {
-      WebResource resource = Client.create().resource( "http://localhost:10042/test" );
-      ClientResponse response = resource.get( ClientResponse.class );
-      return response;
+    private Response sendRequest() {
+      HttpRequest request = HttpRequest.get( "http://localhost:10042/test" );
+      request.code();
+      return new ResponseImpl( request );
     }
     
   };

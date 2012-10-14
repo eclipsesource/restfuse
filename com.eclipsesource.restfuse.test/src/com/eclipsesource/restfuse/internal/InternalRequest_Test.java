@@ -73,7 +73,7 @@ public class InternalRequest_Test {
       assertTrue( headers.containsKey( "Authorization" ) );
       assertEquals( "test", headers.get( "test" ).get( 0 ) );
       assertEquals( MediaType.TEXT_PLAIN, request.getType() );
-      return super.post( request );
+      return super.get( request );
     }
     
     @Override
@@ -93,7 +93,7 @@ public class InternalRequest_Test {
       assertTrue( headers.containsKey( "Authorization" ) );
       assertEquals( "test", headers.get( "test" ).get( 0 ) );
       assertEquals( MediaType.TEXT_PLAIN, request.getType() );
-      return super.post( request );
+      return super.put( request );
     }
     
     @Override
@@ -102,7 +102,7 @@ public class InternalRequest_Test {
       assertTrue( headers.containsKey( "Authorization" ) );
       assertEquals( "test", headers.get( "test" ).get( 0 ) );
       assertEquals( MediaType.TEXT_PLAIN, request.getType() );
-      return super.post( request );
+      return super.delete( request );
     }
     
     @Override
@@ -111,7 +111,7 @@ public class InternalRequest_Test {
       assertTrue( headers.containsKey( "Authorization" ) );
       assertEquals( "test", headers.get( "test" ).get( 0 ) );
       assertEquals( MediaType.TEXT_PLAIN, request.getType() );
-      return super.post( request );
+      return super.options( request );
     }
     
     @Override
@@ -120,7 +120,7 @@ public class InternalRequest_Test {
       assertTrue( headers.containsKey( "Authorization" ) );
       assertEquals( "test", headers.get( "test" ).get( 0 ) );
       assertEquals( MediaType.TEXT_PLAIN, request.getType() );
-      return super.post( request );
+      return super.head( request );
     }
     
   }

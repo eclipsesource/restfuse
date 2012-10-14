@@ -7,12 +7,7 @@ Bundle-Vendor: EclipseSource
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.eclipsesource.restfuse;version="1.1.0",
  com.eclipsesource.restfuse.annotation;version="1.1.0"
-Import-Package: com.sun.jersey.api.client;version="[1.13.0,1.14.0)",
- com.sun.jersey.api.client.config;version="[1.13.0,1.14.0)",
- com.sun.jersey.api.client.filter;version="[1.13.0,1.14.0)",
- com.sun.jersey.client.urlconnection;version="[1.13.0,1.14.0)",
- com.sun.jersey.core.util;version="[1.13.0,1.14.0)",
- javax.servlet;version="[2.5.0,3.0.0)",
+Import-Package: javax.servlet;version="[2.5.0,3.0.0)",
  javax.servlet.http;version="[2.5.0,3.0.0)",
  javax.ws.rs.core,
  org.eclipse.jetty.continuation;version="[8.1.0,9.0.0)",

@@ -25,7 +25,6 @@ import com.eclipsesource.restfuse.annotation.HttpTest;
 import com.eclipsesource.restfuse.annotation.Poll;
 import com.eclipsesource.restfuse.internal.callback.CallbackStatement;
 import com.eclipsesource.restfuse.internal.poll.PollStatement;
-import com.sun.jersey.api.client.ClientResponse;
 
 
 public class HttpTestStatement extends Statement {
@@ -103,8 +102,7 @@ public class HttpTestStatement extends Statement {
 
   public Response sendRequest() {
     InternalRequest request = buildRequest();
-    ClientResponse clientResponse = callService( request );
-    return new ResponseImpl( request.getUrl(), clientResponse );
+    return callService( request );
   }
 
   private InternalRequest buildRequest() {
@@ -112,9 +110,9 @@ public class HttpTestStatement extends Statement {
     return requestConfiguration.createRequest( context );
   }
 
-  private ClientResponse callService( InternalRequest request ) {
+  private Response callService( InternalRequest request ) {
     Method requestMethod = description.getAnnotation( HttpTest.class ).method();
-    ClientResponse result = null;
+    Response result = null;
     if( requestMethod.equals( Method.GET ) ) {
       result = request.get();
     } else if( requestMethod.equals( Method.POST ) ) {

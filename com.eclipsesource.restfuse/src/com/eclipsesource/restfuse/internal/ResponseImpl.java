@@ -7,64 +7,62 @@
  *
  * Contributors:
  *    Holger Staudacher - initial API and implementation
- ******************************************************************************/ 
+ ******************************************************************************/
 package com.eclipsesource.restfuse.internal;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import javax.ws.rs.core.MultivaluedMap;
 
 import com.eclipsesource.restfuse.MediaType;
 import com.eclipsesource.restfuse.Response;
-import com.sun.jersey.api.client.ClientResponse;
+import com.github.kevinsawicki.http.HttpRequest;
 
 
 public class ResponseImpl implements Response {
-
-  private final ClientResponse clientResponse;
-  private final String url;
-
-  public ResponseImpl( String url, ClientResponse clientResponse ) {
-    this.url = url;
-    this.clientResponse = clientResponse;
-  }
   
+  private final HttpRequest request;
+
+  public ResponseImpl( HttpRequest request ) {
+    this.request = request;
+    request.disconnect();
+  }
+
   @Override
   public boolean hasBody() {
-    return clientResponse.hasEntity();
+    return request.body() != null;
   }
-  
+
   @Override
+  @SuppressWarnings( "unchecked" )
   public <T> T getBody( Class<T> type ) {
-    return clientResponse.getEntity( type );
+    if( type != String.class ) {
+      throw new IllegalArgumentException( "Only String is supported. Not the this method is deprecated, see getBody()." );
+    }
+    return ( T )request.body();
   }
-  
+
+  @Override
+  public String getBody() {
+    return request.body();
+  }
+
   @Override
   public MediaType getType() {
-    String type = clientResponse.getType().toString();
-    return MediaType.fromString( type );
+    return MediaType.fromString( request.contentType() );
   }
-  
+
   @Override
   public Map<String, List<String>> getHeaders() {
-    Map<String, List<String>> result = new HashMap<String, List<String>>();
-    MultivaluedMap<String, String> headers = clientResponse.getHeaders();
-    Set<String> keySet = headers.keySet();
-    for( String key : keySet ) {
-      result.put( key, headers.get( key ) );
-    }
-    return result;
+    return request.headers();
   }
-  
+
   @Override
   public int getStatus() {
-    return clientResponse.getStatus();
+    return request.code();
   }
-  
+
+  @Override
   public String getUrl() {
-    return url;
+    return request.getConnection().getURL().toString();
   }
 }

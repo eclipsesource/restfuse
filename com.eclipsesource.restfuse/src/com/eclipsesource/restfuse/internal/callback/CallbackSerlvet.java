@@ -178,7 +178,7 @@ public class CallbackSerlvet extends HttpServlet {
 
   private void addBodyToResponse( HttpServletResponse resp, Response response ) throws IOException {
     if( response.hasBody() ) {
-      String body = response.getBody( String.class );
+      String body = response.getBody();
       resp.getWriter().write( body );
       resp.getWriter().close();
     }

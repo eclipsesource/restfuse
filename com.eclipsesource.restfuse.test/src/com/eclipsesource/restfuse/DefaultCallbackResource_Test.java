@@ -74,7 +74,7 @@ public class DefaultCallbackResource_Test {
     assertNoContent( response );
     assertEquals( MediaType.WILDCARD, response.getType() );
     assertNull( response.getHeaders() );
-    assertNull( response.getBody( String.class ) );
+    assertNull( response.getBody() );
     assertFalse( response.hasBody() );
   }
   

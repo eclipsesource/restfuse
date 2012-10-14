@@ -25,16 +25,18 @@ import org.junit.Test;
 
 public class CallbackResource_Test {
   
+  private static final String URL = "http://localhost";
+  
   @Test
   public void testCreateResponse() {
     Map<String, List<String>> headers = new HashMap<String, List<String>>();
     
     Response response 
-      = CallbackResource.createResponse( Status.OK, MediaType.WILDCARD, "body", headers );
+      = CallbackResource.createResponse( URL, Status.OK, MediaType.WILDCARD, "body", headers );
     
     assertEquals( Status.OK.getStatusCode(), response.getStatus() );
     assertEquals( MediaType.WILDCARD, response.getType() );
-    assertEquals( "body", response.getBody( String.class ) );
+    assertEquals( "body", response.getBody() );
     assertEquals( headers, response.getHeaders() );
   }
   
@@ -43,7 +45,7 @@ public class CallbackResource_Test {
     Map<String, List<String>> headers = new HashMap<String, List<String>>();
     
     Response response 
-      = CallbackResource.createResponse( Status.OK, MediaType.WILDCARD, "body", headers );
+      = CallbackResource.createResponse( URL, Status.OK, MediaType.WILDCARD, "body", headers );
     
     assertNotSame( headers, response.getHeaders() );
   }
@@ -53,7 +55,7 @@ public class CallbackResource_Test {
     Map<String, List<String>> headers = new HashMap<String, List<String>>();
     
     Response response 
-      = CallbackResource.createResponse( Status.OK, MediaType.WILDCARD, "body", headers );
+      = CallbackResource.createResponse( URL, Status.OK, MediaType.WILDCARD, "body", headers );
     
     assertTrue( response.hasBody() );
   }
@@ -61,7 +63,7 @@ public class CallbackResource_Test {
   @Test
   public void testCreateResponseHasNoBody() {
     Response response 
-    = CallbackResource.createResponse( Status.OK, MediaType.WILDCARD, null, null );
+    = CallbackResource.createResponse( URL, Status.OK, MediaType.WILDCARD, null, null );
     
     assertFalse( response.hasBody() );
   }
@@ -69,7 +71,7 @@ public class CallbackResource_Test {
   @Test
   public void testCreateResponseHasNoHeaders() {
     Response response 
-    = CallbackResource.createResponse( Status.OK, MediaType.WILDCARD, null, null );
+    = CallbackResource.createResponse( URL, Status.OK, MediaType.WILDCARD, null, null );
     
     assertNull( response.getHeaders() );
   }
@@ -79,9 +81,9 @@ public class CallbackResource_Test {
     Map<String, List<String>> headers = new HashMap<String, List<String>>();
     
     Response response 
-      = CallbackResource.createResponse( Status.OK, MediaType.WILDCARD, "body", headers );
+      = CallbackResource.createResponse( URL, Status.OK, MediaType.WILDCARD, "body", headers );
     Response response2 
-      = CallbackResource.createResponse( Status.OK, MediaType.WILDCARD, "body", headers );
+      = CallbackResource.createResponse( URL, Status.OK, MediaType.WILDCARD, "body", headers );
     
     assertNotSame( response, response2 );
   }

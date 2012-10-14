@@ -21,12 +21,19 @@ public interface Response {
 
   boolean hasBody();
 
+  /**
+   * @deprecated use getBody() instead. May removed within the next iterations
+   */
   <T> T getBody( Class<T> type );
+
+  String getBody();
 
   MediaType getType();
 
   Map<String, List<String>> getHeaders();
 
   int getStatus();
+
+  String getUrl();
 
 }
