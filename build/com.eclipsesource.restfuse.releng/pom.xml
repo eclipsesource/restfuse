@@ -25,15 +25,15 @@
 		<junit-version>4.10</junit-version>
 		<mockito-version>1.9.0</mockito-version>
 		<findbugs-version>2.5.1</findbugs-version>
-		<jacocoagent>${basedir}/../com.eclipsesource.restfuse.releng/lib/jacocoagent.jar</jacocoagent>
+		<jacocoagent>${basedir}/../build/com.eclipsesource.restfuse.releng/lib/jacocoagent.jar</jacocoagent>
 		<test-arguments>-Xms512m -Xmx512m
-			-javaagent:${jacocoagent}=destfile=${basedir}/../com.eclipsesource.restfuse.releng//target/jacoco.exec,append=true</test-arguments>
+			-javaagent:${jacocoagent}=destfile=${basedir}/../build/com.eclipsesource.restfuse.releng//target/jacoco.exec,append=true</test-arguments>
 		<baseline.repository>http://download.eclipsesource.com/technology/restfuse/p2/</baseline.repository>
 	</properties>
 
 	<modules>
-		<module>../com.eclipsesource.restfuse</module>
-		<module>../com.eclipsesource.restfuse.test</module>
+		<module>../../com.eclipsesource.restfuse</module>
+		<module>../../com.eclipsesource.restfuse.test</module>
 		<module>../com.eclipsesource.restfuse.feature</module>
 		<module>../com.eclipsesource.restfuse.additional.feature</module>
 		<module>../com.eclipsesource.restfuse.repository</module>
@@ -90,7 +90,7 @@
 							<groupId>${project.groupId}</groupId>
 							<artifactId>${project.artifactId}</artifactId>
 							<version>${project.version}</version>
-							<classifier>${project.parent.relativePath}/../com.eclipsesource.restfuse.target/restfuse.1.1.0</classifier>
+							<classifier>${project.parent.relativePath}/../com.eclipsesource.restfuse.target/restfuse.1.2.0</classifier>
 						</artifact>
 					</target>
 					<environments>
