@@ -19,17 +19,25 @@ import com.github.kevinsawicki.http.HttpRequest;
 
 
 public class ResponseImpl implements Response {
-  
-  private final HttpRequest request;
+
+  private final String body;
+  private final String contentType;
+  private final Map<String, List<String>> headers;
+  private final int code;
+  private final String url;
 
   public ResponseImpl( HttpRequest request ) {
-    this.request = request;
+    body = request.body();
+    contentType = request.contentType();
+    headers = request.headers();
+    code = request.code();
+    url = request.getConnection().getURL().toString();
     request.disconnect();
   }
 
   @Override
   public boolean hasBody() {
-    return request.body() != null;
+    return body != null;
   }
 
   @Override
@@ -38,31 +46,31 @@ public class ResponseImpl implements Response {
     if( type != String.class ) {
       throw new IllegalArgumentException( "Only String is supported. Not the this method is deprecated, see getBody()." );
     }
-    return ( T )request.body();
+    return ( T )body;
   }
 
   @Override
   public String getBody() {
-    return request.body();
+    return body;
   }
 
   @Override
   public MediaType getType() {
-    return MediaType.fromString( request.contentType() );
+    return MediaType.fromString( contentType );
   }
 
   @Override
   public Map<String, List<String>> getHeaders() {
-    return request.headers();
+    return headers;
   }
 
   @Override
   public int getStatus() {
-    return request.code();
+    return code;
   }
 
   @Override
   public String getUrl() {
-    return request.getConnection().getURL().toString();
+    return url;
   }
 }

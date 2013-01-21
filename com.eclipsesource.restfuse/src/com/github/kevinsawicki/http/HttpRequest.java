@@ -95,6 +95,21 @@ public class HttpRequest {
   public static final String CHARSET_UTF8 = "UTF-8";
 
   /**
+   * 'application/x-www-form-urlencoded' content type header value
+   */
+  public static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
+
+  /**
+   * 'application/json' content type header value
+   */
+  public static final String CONTENT_TYPE_JSON = "application/json";
+
+  /**
+   * 'gzip' encoding header value
+   */
+  public static final String ENCODING_GZIP = "gzip";
+
+  /**
    * 'Accept' header name
    */
   public static final String HEADER_ACCEPT = "Accept";
@@ -219,11 +234,7 @@ public class HttpRequest {
   private static final String CONTENT_TYPE_MULTIPART = "multipart/form-data; boundary="
       + BOUNDARY;
 
-  private static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
-
-  private static final String CONTENT_TYPE_JSON = "application/json";
-
-  private static final String ENCODING_GZIP = "gzip";
+  private static final String CRLF = "\r\n";
 
   private static final String[] EMPTY_STRINGS = new String[0];
 
@@ -232,7 +243,7 @@ public class HttpRequest {
   private static HostnameVerifier TRUSTED_VERIFIER;
 
   private static String getValidCharset(final String charset) {
-    if (charset != null)
+    if (charset != null && charset.length() > 0)
       return charset;
     else
       return CHARSET_UTF8;
@@ -795,7 +806,7 @@ public class HttpRequest {
    *          name/value pairs
    * @return URL with appended query params
    */
-  public static String append(final CharSequence url, final String... params) {
+  public static String append(final CharSequence url, final Object... params) {
     final String baseUrl = url.toString();
     if (params == null || params.length == 0)
       return baseUrl;
@@ -887,7 +898,7 @@ public class HttpRequest {
    * @return request
    */
   public static HttpRequest get(final CharSequence baseUrl,
-      final boolean encode, final String... params) {
+      final boolean encode, final Object... params) {
     String url = append(baseUrl, params);
     return get(encode ? encode(url) : url);
   }
@@ -951,7 +962,7 @@ public class HttpRequest {
    * @return request
    */
   public static HttpRequest post(final CharSequence baseUrl,
-      final boolean encode, final String... params) {
+      final boolean encode, final Object... params) {
     String url = append(baseUrl, params);
     return post(encode ? encode(url) : url);
   }
@@ -1015,7 +1026,7 @@ public class HttpRequest {
    * @return request
    */
   public static HttpRequest put(final CharSequence baseUrl,
-      final boolean encode, final String... params) {
+      final boolean encode, final Object... params) {
     String url = append(baseUrl, params);
     return put(encode ? encode(url) : url);
   }
@@ -1079,7 +1090,7 @@ public class HttpRequest {
    * @return request
    */
   public static HttpRequest delete(final CharSequence baseUrl,
-      final boolean encode, final String... params) {
+      final boolean encode, final Object... params) {
     String url = append(baseUrl, params);
     return delete(encode ? encode(url) : url);
   }
@@ -1143,7 +1154,7 @@ public class HttpRequest {
    * @return request
    */
   public static HttpRequest head(final CharSequence baseUrl,
-      final boolean encode, final String... params) {
+      final boolean encode, final Object... params) {
     String url = append(baseUrl, params);
     return head(encode ? encode(url) : url);
   }
@@ -1233,17 +1244,16 @@ public class HttpRequest {
   }
 
   /**
-   * Set the 'http.nonProxyHosts' properties to the given host values. Hosts
-   * will be separated by a '|' character.
+   * Set the 'http.nonProxyHosts' property to the given host values.
+   * <p>
+   * Hosts will be separated by a '|' character.
    * <p>
    * This setting will apply to requests.
    *
    * @param hosts
    */
-  public static void nonProxyHosts(String... hosts) {
-    if (hosts == null)
-      hosts = new String[0];
-    if (hosts.length > 0) {
+  public static void nonProxyHosts(final String... hosts) {
+    if (hosts != null && hosts.length > 0) {
       StringBuilder separated = new StringBuilder();
       int last = hosts.length - 1;
       for (int i = 0; i < last; i++)
@@ -1264,20 +1274,22 @@ public class HttpRequest {
    * @return previous value
    */
   private static final String setProperty(final String name, final String value) {
+    final PrivilegedAction<String> action;
     if (value != null)
-      return AccessController.doPrivileged(new PrivilegedAction<String>() {
+      action = new PrivilegedAction<String>() {
 
         public String run() {
           return System.setProperty(name, value);
         }
-      });
+      };
     else
-      return AccessController.doPrivileged(new PrivilegedAction<String>() {
+      action = new PrivilegedAction<String>() {
 
         public String run() {
           return System.clearProperty(name);
         }
-      });
+      };
+    return AccessController.doPrivileged(action);
   }
 
   private final HttpURLConnection connection;
@@ -1585,6 +1597,16 @@ public class HttpRequest {
    */
   public String body() throws HttpRequestException {
     return body(charset());
+  }
+
+  /**
+   * Is the response body empty?
+   *
+   * @return true if the Content-Length response header is 0, false otherwise
+   * @throws HttpRequestException
+   */
+  public boolean isBodyEmpty() throws HttpRequestException {
+    return contentLength() == 0;
   }
 
   /**
@@ -1910,7 +1932,7 @@ public class HttpRequest {
    *
    * @param name
    * @param defaultValue
-   * @return date, -1 on failures
+   * @return date, default value on failures
    * @throws HttpRequestException
    */
   public long dateHeader(final String name, final long defaultValue)
@@ -2270,7 +2292,7 @@ public class HttpRequest {
    * @return this request
    */
   public HttpRequest contentType(final String value, final String charset) {
-    if (charset != null) {
+    if (charset != null && charset.length() > 0) {
       final String separator = "; " + PARAM_CHARSET + '=';
       return header(HEADER_CONTENT_TYPE, value + separator + charset);
     } else
@@ -2287,7 +2309,7 @@ public class HttpRequest {
   }
 
   /**
-   * Get the 'Content-Type' header from the response
+   * Get the 'Content-Length' header from the response
    *
    * @return response header value
    */
@@ -2392,7 +2414,7 @@ public class HttpRequest {
     if (output == null)
       return this;
     if (multipart)
-      output.write("\r\n--" + BOUNDARY + "--\r\n");
+      output.write(CRLF + "--" + BOUNDARY + "--" + CRLF);
     if (ignoreCloseExceptions)
       try {
         output.close();
@@ -2447,9 +2469,9 @@ public class HttpRequest {
     if (!multipart) {
       multipart = true;
       contentType(CONTENT_TYPE_MULTIPART).openOutput();
-      output.write("--" + BOUNDARY + "\r\n");
+      output.write("--" + BOUNDARY + CRLF);
     } else
-      output.write("\r\n--" + BOUNDARY + "\r\n");
+      output.write(CRLF + "--" + BOUNDARY + CRLF);
     return this;
   }
 
@@ -2463,12 +2485,29 @@ public class HttpRequest {
    */
   protected HttpRequest writePartHeader(final String name, final String filename)
       throws IOException {
+    return writePartHeader(name, filename, null);
+  }
+
+  /**
+   * Write part header
+   *
+   * @param name
+   * @param filename
+   * @param contentType
+   * @return this request
+   * @throws IOException
+   */
+  protected HttpRequest writePartHeader(final String name,
+      final String filename, final String contentType) throws IOException {
     final StringBuilder partBuffer = new StringBuilder();
     partBuffer.append("form-data; name=\"").append(name);
     if (filename != null)
       partBuffer.append("\"; filename=\"").append(filename);
     partBuffer.append('"');
-    return partHeader("Content-Disposition", partBuffer.toString());
+    partHeader("Content-Disposition", partBuffer.toString());
+    if (contentType != null)
+      partHeader(HEADER_CONTENT_TYPE, contentType);
+    return send(CRLF);
   }
 
   /**
@@ -2493,9 +2532,25 @@ public class HttpRequest {
    */
   public HttpRequest part(final String name, final String filename,
       final String part) throws HttpRequestException {
+    return part(name, filename, null, part);
+  }
+
+  /**
+   * Write part of a multipart request to the request body
+   *
+   * @param name
+   * @param filename
+   * @param contentType
+   *          value of the Content-Type part header
+   * @param part
+   * @return this request
+   * @throws HttpRequestException
+   */
+  public HttpRequest part(final String name, final String filename,
+      final String contentType, final String part) throws HttpRequestException {
     try {
       startPart();
-      writePartHeader(name, filename);
+      writePartHeader(name, filename, contentType);
       output.write(part);
     } catch (IOException e) {
       throw new HttpRequestException(e);
@@ -2554,13 +2609,29 @@ public class HttpRequest {
    */
   public HttpRequest part(final String name, final String filename,
       final File part) throws HttpRequestException {
+    return part(name, filename, null, part);
+  }
+
+  /**
+   * Write part of a multipart request to the request body
+   *
+   * @param name
+   * @param filename
+   * @param contentType
+   *          value of the Content-Type part header
+   * @param part
+   * @return this request
+   * @throws HttpRequestException
+   */
+  public HttpRequest part(final String name, final String filename,
+      final String contentType, final File part) throws HttpRequestException {
     final InputStream stream;
     try {
       stream = new BufferedInputStream(new FileInputStream(part));
     } catch (IOException e) {
       throw new HttpRequestException(e);
     }
-    return part(name, filename, stream);
+    return part(name, filename, contentType, stream);
   }
 
   /**
@@ -2573,7 +2644,7 @@ public class HttpRequest {
    */
   public HttpRequest part(final String name, final InputStream part)
       throws HttpRequestException {
-    return part(name, null, part);
+    return part(name, null, null, part);
   }
 
   /**
@@ -2581,15 +2652,18 @@ public class HttpRequest {
    *
    * @param name
    * @param filename
+   * @param contentType
+   *          value of the Content-Type part header
    * @param part
    * @return this request
    * @throws HttpRequestException
    */
   public HttpRequest part(final String name, final String filename,
-      final InputStream part) throws HttpRequestException {
+      final String contentType, final InputStream part)
+      throws HttpRequestException {
     try {
       startPart();
-      writePartHeader(name, filename);
+      writePartHeader(name, filename, contentType);
       copy(part, output);
     } catch (IOException e) {
       throw new HttpRequestException(e);
@@ -2607,7 +2681,7 @@ public class HttpRequest {
    */
   public HttpRequest partHeader(final String name, final String value)
       throws HttpRequestException {
-    return send(name).send(": ").send(value).send("\r\n\r\n");
+    return send(name).send(": ").send(value).send(CRLF);
   }
 
   /**
@@ -2790,13 +2864,14 @@ public class HttpRequest {
    * @return this request
    * @throws HttpRequestException
    */
-  public HttpRequest form(final Object name, final Object value,
-      final String charset) throws HttpRequestException {
+  public HttpRequest form(final Object name, final Object value, String charset)
+      throws HttpRequestException {
     final boolean first = !form;
     if (first) {
       contentType(CONTENT_TYPE_FORM, charset);
       form = true;
     }
+    charset = getValidCharset(charset);
     try {
       openOutput();
       if (!first)
