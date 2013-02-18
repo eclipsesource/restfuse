@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?>
-
-<target name="restfuse.1.2.0" sequenceNumber="6">
+<?pde version="3.8"?><target name="restfuse.1.2.0" sequenceNumber="7">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.equinox.serverside.sdk.feature.group" version="3.8.0.v20120522-1841-9Q7dFszFYGis9uYGz0QodZP3fH0t"/>
@@ -28,7 +26,7 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="com.eclipsesource.osgi.additionals.feature.group" version="1.1.0.201209101747"/>
+<unit id="com.eclipsesource.osgi.additionals.feature.group" version="1.10.0.201302041008"/>
 <repository location="http://hstaudacher.github.com/osgi-additionals"/>
 </location>
 </locations>
