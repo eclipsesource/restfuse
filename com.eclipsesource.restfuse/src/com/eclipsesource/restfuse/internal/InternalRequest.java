@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.ws.rs.core.MediaType;
-
 import com.eclipsesource.restfuse.AuthenticationType;
 import com.eclipsesource.restfuse.Response;
 import com.github.kevinsawicki.http.HttpRequest;
@@ -119,7 +117,7 @@ public class InternalRequest {
 
 
   private void addContentType( HttpRequest request ) {
-    String type = mediaType != null ? mediaType : MediaType.WILDCARD;
+    String type = mediaType != null ? mediaType : "*/*";
     request.contentType( type );
   }
 
