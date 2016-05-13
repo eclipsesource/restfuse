@@ -1,3 +1,5 @@
+*Please note: This project is no longer maintained. Resources outside of the GitHub repository have been archived.*
+
 **restfuse**  
 An open-source [JUnit](http://junit.org) extension for testing HTTP/REST services. Restfuse can also be used to test [asynchronous services](http://developer.eclipsesource.com/restfuse/).
 
